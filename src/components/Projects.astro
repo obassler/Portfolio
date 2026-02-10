@@ -1,0 +1,32 @@
+---
+import type { Lang } from "@/i18n/ui";
+import { useTranslations } from "@/i18n/utils";
+import { projects } from "@/data/projects";
+import ProjectCard from "./ProjectCard.astro";
+import ScrollReveal from "./ScrollReveal.astro";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const featuredProjects = projects.filter((p) => p.featured);
+---
+
+<section id="projects" class="px-4 py-24 sm:px-6">
+  <div class="mx-auto max-w-6xl">
+    <ScrollReveal>
+      <h2 class="mb-12 text-3xl font-bold sm:text-4xl">
+        <span class="gradient-text">{t("projects.title")}</span>
+      </h2>
+    </ScrollReveal>
+
+    <div class="grid gap-6 sm:grid-cols-2">
+      {featuredProjects.map((project, i) => (
+        <ProjectCard project={project} lang={lang} delay={i + 1} />
+      ))}
+    </div>
+  </div>
+</section>

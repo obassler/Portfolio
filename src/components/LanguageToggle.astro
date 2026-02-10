@@ -1,0 +1,22 @@
+---
+import type { Lang } from "@/i18n/ui";
+import { useTranslations, getLocalizedPath, getAlternateLanguage } from "@/i18n/utils";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const altLang = getAlternateLanguage(lang);
+const altPath = getLocalizedPath(altLang);
+---
+
+<a
+  href={altPath}
+  class="flex h-9 items-center gap-1.5 rounded-lg border border-border bg-bg-card px-3 text-sm font-medium text-text-secondary transition-colors hover:border-border-hover hover:text-pink"
+  aria-label={`Switch to ${altLang === "en" ? "English" : "Czech"}`}
+>
+  <span class="text-xs">{altLang === "cs" ? "🇨🇿" : "🇬🇧"}</span>
+  {t("lang.switch")}
+</a>

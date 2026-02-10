@@ -1,0 +1,62 @@
+---
+import type { Lang } from "@/i18n/ui";
+import { useTranslations } from "@/i18n/utils";
+import ScrollReveal from "./ScrollReveal.astro";
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section id="contact" class="bg-bg-secondary px-4 py-24 sm:px-6">
+  <div class="mx-auto max-w-2xl text-center">
+    <ScrollReveal>
+      <h2 class="mb-6 text-3xl font-bold sm:text-4xl">
+        <span class="gradient-text">{t("contact.title")}</span>
+      </h2>
+    </ScrollReveal>
+
+    <ScrollReveal delay={1}>
+      <p class="mb-10 text-text-secondary">
+        {t("contact.text")}
+      </p>
+    </ScrollReveal>
+
+    <ScrollReveal delay={2}>
+      <a
+        href="mailto:your.email@example.com"
+        class="inline-flex items-center gap-2 rounded-lg bg-pink px-8 py-3.5 text-sm font-medium text-white transition-all hover:bg-pink/90 hover:shadow-lg hover:shadow-pink/25"
+      >
+        <Icon name="lucide:mail" class="h-4 w-4" />
+        {t("contact.cta")}
+      </a>
+    </ScrollReveal>
+
+    <ScrollReveal delay={3}>
+      <div class="mt-10 flex items-center justify-center gap-6">
+        <a
+          href="https://github.com/obassler"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="GitHub"
+          class="text-text-muted transition-colors hover:text-pink"
+        >
+          <Icon name="simple-icons:github" class="h-6 w-6" />
+        </a>
+        <a
+          href="https://linkedin.com/in/"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="LinkedIn"
+          class="text-text-muted transition-colors hover:text-pink"
+        >
+          <Icon name="simple-icons:linkedin" class="h-6 w-6" />
+        </a>
+      </div>
+    </ScrollReveal>
+  </div>
+</section>

@@ -1,0 +1,39 @@
+---
+import type { Lang } from "@/i18n/ui";
+import { useTranslations } from "@/i18n/utils";
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<footer class="border-t border-border bg-bg-secondary">
+  <div class="mx-auto flex max-w-6xl flex-col items-center gap-4 px-4 py-8 sm:flex-row sm:justify-between sm:px-6">
+    <p class="text-sm text-text-muted">
+      {t("footer.built")} Astro & Tailwind {t("footer.by")}
+    </p>
+
+    <div class="flex items-center gap-4">
+      <a
+        href="https://github.com/obassler"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="GitHub"
+        class="text-text-muted transition-colors hover:text-pink"
+      >
+        <Icon name="simple-icons:github" class="h-5 w-5" />
+      </a>
+      <a
+        href="mailto:your.email@example.com"
+        aria-label="Email"
+        class="text-text-muted transition-colors hover:text-pink"
+      >
+        <Icon name="lucide:mail" class="h-5 w-5" />
+      </a>
+    </div>
+  </div>
+</footer>
