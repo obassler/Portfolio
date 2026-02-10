@@ -11,6 +11,20 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    slug: "schedule-box",
+    title: {
+      en: "ScheduleBox",
+      cs: "ScheduleBox",
+    },
+    description: {
+      en: "An all-in-one AI-powered business platform for reservation-based services (salons, fitness, clinics, and more), developed for PMLOGY s.r.o. Features a booking system, payment infrastructure, CRM, loyalty program, marketing automation, and AI-driven analytics. Built with a microservices architecture spanning 17 services.",
+      cs: "All-in-one AI-powered business platforma pro služby založené na rezervacích (salóny, fitness, kliniky a další), vyvíjená pro firmu PMLOGY s.r.o. Obsahuje rezervační systém, platební infrastrukturu, CRM, věrnostní program, automatizaci marketingu a AI analytiku. Postavena na mikroservisní architektuře s 17 službami.",
+    },
+    tags: ["Next.js", "TypeScript", "PostgreSQL", "Redis", "AI/ML"],
+    github: "https://github.com/PMLOGY/schedule_box",
+    featured: true,
+  },
+  {
     slug: "loss-landscapes",
     title: {
       en: "Loss Landscapes in Neural Networks",
