@@ -59,8 +59,8 @@ export const ui = {
   "hobbies.title": { en: "Beyond the Code", cs: "Mimo kód" },
   "hobbies.gaming": { en: "Games", cs: "Hry" },
   "hobbies.gaming.desc": {
-    en: "I grew up on Elden Ring, Dishonored, and the Resident Evil series — anything with a good atmosphere and story. I also play League casually with friends when we need a break from everything.",
-    cs: "Vyrostl jsem na Elden Ringu, Dishonored a sérii Resident Evil — cokoliv s dobrou atmosférou a příběhem. Taky s kamarády hrajeme League, když potřebujeme od všeho vypnout.",
+    en: "Big fan of the Souls series, Elden Ring, Dishonored, and Resident Evil — I love anything with a strong atmosphere and story. I also play League casually with friends when we need a break from everything.",
+    cs: "Velký fanoušek série Souls, Elden Ringu, Dishonored a Resident Evil — miluju cokoliv se silnou atmosférou a příběhem. Taky s kamarády hrajeme League, když potřebujeme od všeho vypnout.",
   },
   "hobbies.anime": { en: "Anime & Japan", cs: "Anime a Japonsko" },
   "hobbies.anime.desc": {
