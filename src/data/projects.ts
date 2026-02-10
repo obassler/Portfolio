@@ -45,11 +45,11 @@ export const projects: Project[] = [
       cs: "Chatovací aplikace v reálném čase",
     },
     description: {
-      en: "A real-time chat application built in Java as part of the Software Engineering course. Features multi-user messaging with a client-server architecture.",
-      cs: "Chatovací aplikace v reálném čase vytvořená v Javě jako součást předmětu Softwarové inženýrství. Obsahuje zasílání zpráv více uživatelům s architekturou klient-server.",
+      en: "A real-time chat application built in Java as part of the Software Engineering course. Developed in collaboration with a classmate, featuring multi-user messaging with a client-server architecture.",
+      cs: "Chatovací aplikace v reálném čase vytvořená v Javě jako součást předmětu Softwarové inženýrství. Vyvinuta ve spolupráci se spolužákem, obsahuje zasílání zpráv více uživatelům s architekturou klient-server.",
     },
     tags: ["Java", "Networking", "Socket Programming"],
-    github: "https://github.com/obassler/SWI2-ChatAPP",
+    github: "https://github.com/LukiMori/7SWI2_Projekt",
     featured: true,
   },
   {
@@ -64,34 +64,6 @@ export const projects: Project[] = [
     },
     tags: ["JavaScript", "HTML", "CSS", "Web App"],
     github: "https://github.com/obassler/SWI-project",
-    featured: true,
-  },
-  {
-    slug: "tales-of-pango",
-    title: {
-      en: "Tales of Pango",
-      cs: "Tales of Pango",
-    },
-    description: {
-      en: "A Java-based game project featuring adventure gameplay mechanics and story-driven elements.",
-      cs: "Herní projekt v Javě s dobrodružnou herní mechanikou a příběhovými prvky.",
-    },
-    tags: ["Java", "Game Dev", "OOP"],
-    github: "https://github.com/obassler/TalesofPango",
-    featured: true,
-  },
-  {
-    slug: "wowo-origins",
-    title: {
-      en: "Wowo Origins",
-      cs: "Wowo Origins",
-    },
-    description: {
-      en: "A Java-based game project with original gameplay concepts and mechanics.",
-      cs: "Herní projekt v Javě s originálními herními koncepty a mechanikami.",
-    },
-    tags: ["Java", "Game Dev", "OOP"],
-    github: "https://github.com/obassler/wowo_origins",
     featured: true,
   },
   {

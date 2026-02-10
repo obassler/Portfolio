@@ -25,12 +25,12 @@ export const education: EducationEntry[] = [
   },
   {
     title: {
-      en: "High School — Computer Networks",
-      cs: "Střední škola — Počítačové sítě",
+      en: "High School — Information Technologies",
+      cs: "Střední škola — Informační technologie",
     },
     institution: {
-      en: "High School (Maturita)",
-      cs: "Střední škola (Maturita)",
+      en: "Střední škola informačních technologií, s.r.o.",
+      cs: "Střední škola informačních technologií, s.r.o.",
     },
     period: "2019 - 2023",
     description: {
