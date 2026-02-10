@@ -30,21 +30,9 @@ const hobbies = [
     ],
   },
   {
-    icon: "lucide:chef-hat",
-    title: t("hobbies.cooking"),
-    description: t("hobbies.cooking.desc"),
-    links: [],
-  },
-  {
-    icon: "lucide:camera",
-    title: t("hobbies.photography"),
-    description: t("hobbies.photography.desc"),
-    links: [],
-  },
-  {
-    icon: "lucide:headphones",
-    title: t("hobbies.music"),
-    description: t("hobbies.music.desc"),
+    icon: "lucide:heart",
+    title: t("hobbies.other"),
+    description: t("hobbies.other.desc"),
     links: [
       { label: "Spotify", href: "https://open.spotify.com/user/21hqc2iwvjlozj67wsigsqgty", icon: "simple-icons:spotify" },
     ],
@@ -55,13 +43,12 @@ const hobbies = [
 <section id="hobbies" class="px-4 py-24 sm:px-6">
   <div class="mx-auto max-w-6xl">
     <ScrollReveal>
-      <h2 class="mb-2 text-3xl font-bold sm:text-4xl">
+      <h2 class="mb-12 text-3xl font-bold sm:text-4xl">
         <span class="gradient-text">{t("hobbies.title")}</span>
       </h2>
-      <p class="mb-12 text-text-muted">{t("hobbies.intro")}</p>
     </ScrollReveal>
 
-    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="grid gap-4 sm:grid-cols-3">
       {hobbies.map((hobby, i) => (
         <ScrollReveal delay={i + 1} class="group rounded-xl border border-border bg-bg-card p-5 transition-colors hover:border-pink/40">
           <div class="mb-3 flex items-center gap-3">

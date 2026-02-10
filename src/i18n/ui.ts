@@ -57,34 +57,20 @@ export const ui = {
 
   // Hobbies
   "hobbies.title": { en: "Beyond the Code", cs: "Mimo kód" },
-  "hobbies.intro": {
-    en: "When I'm not coding, you'll find me exploring these worlds:",
-    cs: "Když zrovna neprogramuji, najdete mě v těchto světech:",
-  },
-  "hobbies.gaming": { en: "Gaming", cs: "Hraní her" },
+  "hobbies.gaming": { en: "Games", cs: "Hry" },
   "hobbies.gaming.desc": {
-    en: "Soulslike enthusiast — Elden Ring, Dishonored, and Resident Evil are my all-time favorites. Emerald IV in League of Legends (Level 924) and 3,500+ Steam achievements across my library.",
-    cs: "Fanoušek soulslike her — Elden Ring, Dishonored a Resident Evil jsou moje nejoblíbenější. Emerald IV v League of Legends (Level 924) a přes 3 500 achievementů na Steamu.",
+    en: "I grew up on Elden Ring, Dishonored, and the Resident Evil series — anything with a good atmosphere and story. I also play League casually with friends when we need a break from everything.",
+    cs: "Vyrostl jsem na Elden Ringu, Dishonored a sérii Resident Evil — cokoliv s dobrou atmosférou a příběhem. Taky s kamarády hrajeme League, když potřebujeme od všeho vypnout.",
   },
-  "hobbies.anime": { en: "Anime & Japanese Culture", cs: "Anime a japonská kultura" },
+  "hobbies.anime": { en: "Anime & Japan", cs: "Anime a Japonsko" },
   "hobbies.anime.desc": {
-    en: "Avid anime watcher and manga reader. Currently learning Japanese. Fascinated by Japanese art, history, and cuisine.",
-    cs: "Vášnivý divák anime a čtenář mangy. Momentálně se učím japonsky. Fascinuje mě japonské umění, historie a kuchyně.",
+    en: "Huge anime and manga fan. I'm currently learning Japanese — the language, the culture, the food, all of it. It's been a passion since I was a kid.",
+    cs: "Velký fanoušek anime a mangy. Momentálně se učím japonsky — jazyk, kultura, jídlo, prostě všechno. Je to moje vášeň už od dětství.",
   },
-  "hobbies.cooking": { en: "Cooking", cs: "Vaření" },
-  "hobbies.cooking.desc": {
-    en: "I love experimenting in the kitchen — trying new recipes and cuisines is my way of unwinding.",
-    cs: "Rád experimentuji v kuchyni — zkoušení nových receptů a kuchyní je můj způsob relaxace.",
-  },
-  "hobbies.photography": { en: "Photography", cs: "Fotografie" },
-  "hobbies.photography.desc": {
-    en: "Capturing beautiful scenery and landscapes. There's something special about finding the right light and angle.",
-    cs: "Zachycování krásné přírody a krajin. Na hledání správného světla a úhlu je něco zvláštního.",
-  },
-  "hobbies.music": { en: "Music", cs: "Hudba" },
-  "hobbies.music.desc": {
-    en: "Eclectic taste — from metal to everything in between. Always have something playing in the background while coding.",
-    cs: "Eklektický vkus — od metalu po vše mezi tím. Při programování mi vždy něco hraje na pozadí.",
+  "hobbies.other": { en: "Also into...", cs: "Taky mě baví..." },
+  "hobbies.other.desc": {
+    en: "Cooking, taking scenery photos, and listening to way too much music — mostly metal, but honestly a bit of everything.",
+    cs: "Vaření, focení krajiny a poslouchání až moc velké porce hudby — hlavně metal, ale upřímně trochu od všeho.",
   },
 
   // Contact
@@ -93,7 +79,7 @@ export const ui = {
     en: "I'm currently looking for opportunities after graduation. Whether you have a question or just want to say hi, feel free to reach out!",
     cs: "Aktuálně hledám příležitosti po dokončení studia. Ať už máte dotaz nebo se chcete jen pozdravit, neváhejte se ozvat!",
   },
-  "contact.cta": { en: "Say Hello", cs: "Napište mi" },
+  "contact.cta": { en: "Email Me", cs: "Napište mi" },
 
   // Contact details
   "contact.phone": { en: "Phone", cs: "Telefon" },
