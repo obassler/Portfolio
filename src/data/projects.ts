@@ -3,9 +3,9 @@ export interface Project {
   title: { en: string; cs: string };
   description: { en: string; cs: string };
   tags: string[];
+  icon: string;
   github?: string;
   live?: string;
-  image?: string;
   featured: boolean;
 }
 
@@ -21,7 +21,7 @@ export const projects: Project[] = [
       cs: "All-in-one AI-powered business platforma pro služby založené na rezervacích (salóny, fitness, kliniky a další), vyvíjená pro firmu PMLOGY s.r.o. Obsahuje rezervační systém, platební infrastrukturu, CRM, věrnostní program, automatizaci marketingu a AI analytiku. Postavena na mikroservisní architektuře s 17 službami.",
     },
     tags: ["Next.js", "TypeScript", "PostgreSQL", "Redis", "AI/ML"],
-    github: "https://github.com/PMLOGY/schedule_box",
+    icon: "lucide:calendar-check",
     featured: true,
   },
   {
@@ -35,6 +35,7 @@ export const projects: Project[] = [
       cs: "Bakalářská práce zkoumající vizualizaci loss landscape v neuronových sítích. Natrénováno 100 CNN modelů na FashionMNIST s různými náhodnými seedy a analyzovány korelační matice predikcí pro studium vztahů mezi různými minimy. Vytvořeno pomocí PyTorch, PyTorch Lightning, Hydra a Weights & Biases.",
     },
     tags: ["Python", "PyTorch", "Machine Learning", "CNN", "W&B"],
+    icon: "lucide:brain",
     github: "https://github.com/obassler/FashionMnist-OSU",
     featured: true,
   },
@@ -49,6 +50,7 @@ export const projects: Project[] = [
       cs: "VR hororová hra vytvořená v C# s pohlcujícím 3D prostředím a interaktivními herními mechanikami. Spojuje dovednosti v herním vývoji s technologií virtuální reality pro vytvoření poutavého hororového zážitku.",
     },
     tags: ["C#", "VR", "Unity", "Game Dev", "3D"],
+    icon: "lucide:gamepad-2",
     github: "https://github.com/obassler/ghoststories",
     featured: true,
   },
@@ -63,6 +65,7 @@ export const projects: Project[] = [
       cs: "Chatovací aplikace v reálném čase vytvořená v Javě jako součást předmětu Softwarové inženýrství. Vyvinuta ve spolupráci se spolužákem, obsahuje zasílání zpráv více uživatelům s architekturou klient-server.",
     },
     tags: ["Java", "Networking", "Socket Programming"],
+    icon: "lucide:message-circle",
     github: "https://github.com/LukiMori/7SWI2_Projekt",
     featured: true,
   },
@@ -77,6 +80,7 @@ export const projects: Project[] = [
       cs: "Webový ovládací panel pro Dungeon Mastera v Dungeons & Dragons vytvořený v JavaScriptu. Poskytuje DM nástrojům pro správu a vedení stolních RPG sezení.",
     },
     tags: ["JavaScript", "HTML", "CSS", "Web App"],
+    icon: "lucide:dice-5",
     github: "https://github.com/obassler/SWI-project",
     featured: true,
   },
@@ -91,6 +95,7 @@ export const projects: Project[] = [
       cs: "Textová adventura vytvořená v Javě s interaktivním větvením příběhu a volbami hráče.",
     },
     tags: ["Java", "Game Dev", "CLI"],
+    icon: "lucide:terminal",
     github: "https://github.com/obassler/textVenture",
     featured: true,
   },
@@ -105,6 +110,7 @@ export const projects: Project[] = [
       cs: "Mobilní aplikace poznámek vytvořená v Kotlinu pro Android. Umožňuje uživatelům vytvářet, upravovat a organizovat své poznámky.",
     },
     tags: ["Kotlin", "Android", "Mobile"],
+    icon: "lucide:notebook-pen",
     github: "https://github.com/obassler/NotesApp",
     featured: false,
   },
@@ -119,6 +125,7 @@ export const projects: Project[] = [
       cs: "Jednoduchá Android aplikace vytvořená v Kotlinu pro výpočet kvadratických rovnic.",
     },
     tags: ["Kotlin", "Android", "Mobile"],
+    icon: "lucide:calculator",
     github: "https://github.com/obassler/SimpleAppToCalcQuadraticFormula",
     featured: false,
   },
@@ -133,6 +140,7 @@ export const projects: Project[] = [
       cs: "Mobilní aplikace zkoumající koncepty vývoje aplikací.",
     },
     tags: ["Mobile", "App Dev"],
+    icon: "lucide:smartphone",
     github: "https://github.com/obassler/AppleApp",
     featured: false,
   },

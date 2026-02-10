@@ -18,13 +18,10 @@ const t = useTranslations(lang);
   class="scroll-reveal group flex flex-col rounded-xl border border-border bg-bg-card transition-all hover:border-pink/40 hover:shadow-lg hover:shadow-pink/5"
   data-delay={delay}
 >
-  <!-- Image placeholder -->
-  <div class="relative aspect-video overflow-hidden rounded-t-xl bg-bg-secondary">
-    <div class="flex h-full items-center justify-center">
-      <Icon name="lucide:image" class="h-10 w-10 text-text-muted/30" />
-    </div>
-    <!-- Gradient overlay on hover -->
-    <div class="absolute inset-0 bg-gradient-to-t from-bg-card/80 to-transparent opacity-0 transition-opacity group-hover:opacity-100"></div>
+  <!-- Icon header -->
+  <div class="relative flex h-32 items-center justify-center overflow-hidden rounded-t-xl bg-gradient-to-br from-pink/10 via-purple/10 to-teal/10">
+    <Icon name={project.icon} class="h-12 w-12 text-pink/60 transition-transform duration-300 group-hover:scale-110" />
+    <div class="absolute inset-0 bg-gradient-to-t from-bg-card/40 to-transparent opacity-0 transition-opacity group-hover:opacity-100"></div>
   </div>
 
   <!-- Content -->
