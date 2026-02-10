@@ -5,19 +5,21 @@ import About from "@/components/About.astro";
 import Projects from "@/components/Projects.astro";
 import Skills from "@/components/Skills.astro";
 import Education from "@/components/Education.astro";
+import Hobbies from "@/components/Hobbies.astro";
 import Contact from "@/components/Contact.astro";
 
 const lang = "cs" as const;
 ---
 
 <BaseLayout
-  title="Ondrej Bassler - Softwarovy vyvojar"
-  description="Portfolio Ondreje Basslera - Softwarovy vyvojar se zamernenim na webovy vyvoj, VR hry, strojove uceni a pocitacove site."
+  title="Ondřej Bassler - Softwarový vývojář"
+  description="Portfolio Ondřeje Basslera - Softwarový vývojář se zaměřením na webový vývoj, VR hry, strojové učení a počítačové sítě."
 >
   <Hero lang={lang} />
   <About lang={lang} />
   <Projects lang={lang} />
   <Skills lang={lang} />
   <Education lang={lang} />
+  <Hobbies lang={lang} />
   <Contact lang={lang} />
 </BaseLayout>

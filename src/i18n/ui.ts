@@ -55,6 +55,38 @@ export const ui = {
   // Education
   "education.title": { en: "Education & Certifications", cs: "Vzdělání a certifikace" },
 
+  // Hobbies
+  "hobbies.title": { en: "Beyond the Code", cs: "Mimo kód" },
+  "hobbies.intro": {
+    en: "When I'm not coding, you'll find me exploring these worlds:",
+    cs: "Když zrovna neprogramuji, najdete mě v těchto světech:",
+  },
+  "hobbies.gaming": { en: "Gaming", cs: "Hraní her" },
+  "hobbies.gaming.desc": {
+    en: "Soulslike enthusiast — Elden Ring, Dishonored, and Resident Evil are my all-time favorites. Emerald IV in League of Legends (Level 924) and 3,500+ Steam achievements across my library.",
+    cs: "Fanoušek soulslike her — Elden Ring, Dishonored a Resident Evil jsou moje nejoblíbenější. Emerald IV v League of Legends (Level 924) a přes 3 500 achievementů na Steamu.",
+  },
+  "hobbies.anime": { en: "Anime & Japanese Culture", cs: "Anime a japonská kultura" },
+  "hobbies.anime.desc": {
+    en: "Avid anime watcher and manga reader. Currently learning Japanese. Fascinated by Japanese art, history, and cuisine.",
+    cs: "Vášnivý divák anime a čtenář mangy. Momentálně se učím japonsky. Fascinuje mě japonské umění, historie a kuchyně.",
+  },
+  "hobbies.cooking": { en: "Cooking", cs: "Vaření" },
+  "hobbies.cooking.desc": {
+    en: "I love experimenting in the kitchen — trying new recipes and cuisines is my way of unwinding.",
+    cs: "Rád experimentuji v kuchyni — zkoušení nových receptů a kuchyní je můj způsob relaxace.",
+  },
+  "hobbies.photography": { en: "Photography", cs: "Fotografie" },
+  "hobbies.photography.desc": {
+    en: "Capturing beautiful scenery and landscapes. There's something special about finding the right light and angle.",
+    cs: "Zachycování krásné přírody a krajin. Na hledání správného světla a úhlu je něco zvláštního.",
+  },
+  "hobbies.music": { en: "Music", cs: "Hudba" },
+  "hobbies.music.desc": {
+    en: "Eclectic taste — from metal to everything in between. Always have something playing in the background while coding.",
+    cs: "Eklektický vkus — od metalu po vše mezi tím. Při programování mi vždy něco hraje na pozadí.",
+  },
+
   // Contact
   "contact.title": { en: "Get In Touch", cs: "Kontaktujte mě" },
   "contact.text": {
