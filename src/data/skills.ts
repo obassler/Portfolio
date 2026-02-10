@@ -23,6 +23,9 @@ export const skillCategories: SkillCategory[] = [
   {
     key: "frameworks",
     items: [
+      { name: "Spring Boot", icon: "simple-icons:springboot" },
+      { name: "React", icon: "simple-icons:react" },
+      { name: "Vue.js", icon: "simple-icons:vuedotjs" },
       { name: "PyTorch", icon: "simple-icons:pytorch" },
       { name: "Unity", icon: "simple-icons:unity" },
       { name: "Astro", icon: "simple-icons:astro" },

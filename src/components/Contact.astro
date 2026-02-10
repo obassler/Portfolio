@@ -28,7 +28,7 @@ const t = useTranslations(lang);
 
     <ScrollReveal delay={2}>
       <a
-        href="mailto:your.email@example.com"
+        href="mailto:Ondrej.bassler@gmail.com"
         class="inline-flex items-center gap-2 rounded-lg bg-pink px-8 py-3.5 text-sm font-medium text-white transition-all hover:bg-pink/90 hover:shadow-lg hover:shadow-pink/25"
       >
         <Icon name="lucide:mail" class="h-4 w-4" />
@@ -36,8 +36,29 @@ const t = useTranslations(lang);
       </a>
     </ScrollReveal>
 
+    <!-- Contact details -->
     <ScrollReveal delay={3}>
-      <div class="mt-10 flex items-center justify-center gap-6">
+      <div class="mt-10 grid gap-4 sm:grid-cols-2">
+        <a
+          href="mailto:Ondrej.bassler@gmail.com"
+          class="flex items-center justify-center gap-2 rounded-lg border border-border bg-bg-card px-4 py-3 text-sm text-text-secondary transition-colors hover:border-pink/40 hover:text-pink"
+        >
+          <Icon name="lucide:mail" class="h-4 w-4" />
+          Ondrej.bassler@gmail.com
+        </a>
+        <a
+          href="tel:+420737018693"
+          class="flex items-center justify-center gap-2 rounded-lg border border-border bg-bg-card px-4 py-3 text-sm text-text-secondary transition-colors hover:border-pink/40 hover:text-pink"
+        >
+          <Icon name="lucide:phone" class="h-4 w-4" />
+          +420 737 018 693
+        </a>
+      </div>
+    </ScrollReveal>
+
+    <!-- Social links -->
+    <ScrollReveal delay={4}>
+      <div class="mt-8 flex items-center justify-center gap-6">
         <a
           href="https://github.com/obassler"
           target="_blank"
@@ -48,14 +69,21 @@ const t = useTranslations(lang);
           <Icon name="simple-icons:github" class="h-6 w-6" />
         </a>
         <a
-          href="https://linkedin.com/in/"
+          href="https://www.instagram.com/los_onnielos/"
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="LinkedIn"
+          aria-label="Instagram"
           class="text-text-muted transition-colors hover:text-pink"
         >
-          <Icon name="simple-icons:linkedin" class="h-6 w-6" />
+          <Icon name="simple-icons:instagram" class="h-6 w-6" />
         </a>
+        <span
+          class="flex items-center gap-1.5 text-text-muted"
+          title="Discord: onniel09"
+        >
+          <Icon name="simple-icons:discord" class="h-6 w-6" />
+          <span class="text-sm">onniel09</span>
+        </span>
       </div>
     </ScrollReveal>
   </div>

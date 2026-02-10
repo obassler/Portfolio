@@ -10,32 +10,32 @@ export const education: EducationEntry[] = [
   {
     title: {
       en: "Bachelor's in Applied Informatics",
-      cs: "Bakalarske studium - Aplikovana informatika",
+      cs: "Bakalářské studium — Aplikovaná informatika",
     },
     institution: {
       en: "University of Ostrava, Faculty of Science",
-      cs: "Ostravska univerzita, Prirodovedecka fakulta",
+      cs: "Ostravská univerzita, Přírodovědecká fakulta",
     },
     period: "2023 - 2026",
     description: {
       en: "Studying algorithms, data structures, software engineering, databases, computer networks, computer graphics, AI fundamentals, and more. Bachelor's thesis on Loss Landscapes in Neural Networks.",
-      cs: "Studium algoritmu, datovych struktur, softwaroveho inzenyrstvi, databazi, pocitacovych siti, pocitacove grafiky, zakladu AI a dalsiho. Bakalarska prace na tema Loss Landscapes v neuronovych sitich.",
+      cs: "Studium algoritmů, datových struktur, softwarového inženýrství, databází, počítačových sítí, počítačové grafiky, základů AI a dalšího. Bakalářská práce na téma Loss Landscapes v neuronových sítích.",
     },
     tags: ["Algorithms", "Software Engineering", "Databases", "Networks", "AI", "Computer Graphics"],
   },
   {
     title: {
-      en: "High School - Computer Networks",
-      cs: "Stredni skola - Pocitacove site",
+      en: "High School — Computer Networks",
+      cs: "Střední škola — Počítačové sítě",
     },
     institution: {
       en: "High School (Maturita)",
-      cs: "Stredni skola (Maturita)",
+      cs: "Střední škola (Maturita)",
     },
     period: "2019 - 2023",
     description: {
       en: "Specialized in computer networks. Completed CCNA 1-3 and Cisco Network Security courses. Earned Maturita certification in Programming, Networks, and Operating Systems.",
-      cs: "Specializace na pocitacove site. Dokonceny kurzy CCNA 1-3 a Cisco Network Security. Ziskana maturita z Programovani, Siti a Operacnich systemu.",
+      cs: "Specializace na počítačové sítě. Dokončeny kurzy CCNA 1-3 a Cisco Network Security. Získána maturita z Programování, Sítí a Operačních systémů.",
     },
     tags: ["CCNA 1-3", "Cisco Security", "Programming", "Networks", "Operating Systems"],
   },

@@ -9,12 +9,13 @@ interface Props {
 
 const { lang } = Astro.props;
 const t = useTranslations(lang);
+const year = new Date().getFullYear();
 ---
 
 <footer class="border-t border-border bg-bg-secondary">
   <div class="mx-auto flex max-w-6xl flex-col items-center gap-4 px-4 py-8 sm:flex-row sm:justify-between sm:px-6">
     <p class="text-sm text-text-muted">
-      {t("footer.built")} Astro & Tailwind {t("footer.by")}
+      &copy; {year} Ondřej Bassler. {t("footer.rights")}
     </p>
 
     <div class="flex items-center gap-4">
@@ -28,7 +29,16 @@ const t = useTranslations(lang);
         <Icon name="simple-icons:github" class="h-5 w-5" />
       </a>
       <a
-        href="mailto:your.email@example.com"
+        href="https://www.instagram.com/los_onnielos/"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Instagram"
+        class="text-text-muted transition-colors hover:text-pink"
+      >
+        <Icon name="simple-icons:instagram" class="h-5 w-5" />
+      </a>
+      <a
+        href="mailto:Ondrej.bassler@gmail.com"
         aria-label="Email"
         class="text-text-muted transition-colors hover:text-pink"
       >
