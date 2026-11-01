@@ -3,26 +3,50 @@ import { Environment, Lightformer, Float } from "@react-three/drei";
 import { useEffect, useRef, useState } from "react";
 import type { Mesh, Group } from "three";
 
-// Slowly turning lacquered knot lit by crimson and gold light strips.
-// It leans toward the cursor a little; nothing else moves.
+// Lacquered knot lit by crimson and gold light strips.
+// It turns on its own, follows the cursor, twists as the page scrolls,
+// and spins up when clicked anywhere in the hero, then eases back.
+const pointer = { x: 0, y: 0 };
+let scroll = 0;
+let kick = 0;
+if (typeof window !== "undefined") {
+  window.addEventListener("pointermove", (e) => {
+    pointer.x = (e.clientX / window.innerWidth) * 2 - 1;
+    pointer.y = -((e.clientY / window.innerHeight) * 2 - 1);
+  }, { passive: true });
+  window.addEventListener("scroll", () => { scroll = window.scrollY; }, { passive: true });
+  window.addEventListener("pointerdown", (e) => {
+    if (window.scrollY < window.innerHeight && !(e.target as HTMLElement).closest("a,button")) kick = 4;
+  });
+}
+
 function Knot({ calm }: { calm: boolean }) {
   const group = useRef<Group>(null);
   const mesh = useRef<Mesh>(null);
+  const spin = useRef(0);
 
-  useFrame((state, delta) => {
+  useFrame((_, delta) => {
     if (!mesh.current || !group.current) return;
+    const d = Math.min(delta, 0.05);
     if (!calm) {
-      mesh.current.rotation.x += delta * 0.08;
-      mesh.current.rotation.y += delta * 0.12;
+      // base spin plus a decaying boost from clicks
+      spin.current += (kick - spin.current) * 0.08;
+      kick *= 0.94;
+      mesh.current.rotation.x += d * (0.22 + spin.current * 0.6);
+      mesh.current.rotation.y += d * (0.32 + spin.current);
     }
-    const { x, y } = state.pointer;
-    group.current.rotation.y += (x * 0.35 - group.current.rotation.y) * 0.04;
-    group.current.rotation.x += (-y * 0.25 - group.current.rotation.x) * 0.04;
+    const g = group.current;
+    const sy = scroll / window.innerHeight;
+    g.rotation.y += (pointer.x * 0.7 - g.rotation.y) * 0.05;
+    g.rotation.x += (-pointer.y * 0.5 - g.rotation.x) * 0.05;
+    g.rotation.z += ((calm ? 0 : sy * 1.4) - g.rotation.z) * 0.08;
+    g.position.x += (pointer.x * 0.35 - g.position.x) * 0.04;
+    g.position.y += (pointer.y * 0.2 + sy * 1.2 - g.position.y) * 0.06;
   });
 
   return (
     <group ref={group}>
-      <Float speed={calm ? 0 : 1.1} rotationIntensity={0.25} floatIntensity={0.6}>
+      <Float speed={calm ? 0 : 1.8} rotationIntensity={0.5} floatIntensity={1.1}>
         <mesh ref={mesh} rotation={[0.4, 0.6, 0]}>
           <torusKnotGeometry args={[0.9, 0.26, 260, 48, 2, 3]} />
           <meshPhysicalMaterial

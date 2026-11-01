@@ -20,18 +20,9 @@ export const ui = {
   "nav.skip": { en: "Skip to content", cs: "Přeskočit na obsah" },
 
   "hero.title": { en: "Full-stack apps, built to actually work.", cs: "Full-stack aplikace, které opravdu fungují." },
-  "hero.lead": {
-    en: "I'm Ondřej, a junior developer at PMLOGY. I build web apps from the Spring Boot or Node backend to the React or Angular frontend, then test them until they hold up. I'm also finishing a bachelor's degree at the University of Ostrava.",
-    cs: "Jsem Ondřej, junior vývojář v PMLOGY. Stavím webové aplikace od backendu ve Spring Bootu nebo Node po frontend v Reactu nebo Angularu a testuju je, dokud spolehlivě nefungují. K tomu dokončuji bakalářku na Ostravské univerzitě.",
-  },
+  "hero.lead": { en: "I'm Ondřej, a junior full-stack developer. I build web apps from the Spring Boot or Node backend to the React or Angular frontend, then test them until they hold up. I'm also finishing a bachelor's degree in Applied Informatics at the University of Ostrava.", cs: "Jsem Ondřej, junior full-stack vývojář. Stavím webové aplikace od backendu ve Spring Bootu nebo Node po frontend v Reactu nebo Angularu a testuju je, dokud spolehlivě nefungují. K tomu dokončuji bakalářku z Aplikované informatiky na Ostravské univerzitě." },
   "hero.cta.work": { en: "See my work", cs: "Moje práce" },
   "hero.cta.cv": { en: "Download CV", cs: "Stáhnout CV" },
-  "hero.now": { en: "Now", cs: "Teď" },
-  "hero.now.v": { en: "Junior Developer, PMLOGY", cs: "Junior Developer, PMLOGY" },
-  "hero.looking": { en: "Looking for", cs: "Hledám" },
-  "hero.looking.v": { en: "Full-time junior role after graduation", cs: "Plný úvazek jako junior po studiu" },
-  "hero.where": { en: "Based in", cs: "Kde" },
-  "hero.where.v": { en: "Třinec, CZ · open to remote", cs: "Třinec · i na dálku" },
 
   "thesis.kicker": { en: "Bachelor's thesis", cs: "Bakalářská práce" },
   "thesis.title": { en: "100 networks, one dataset, different answers.", cs: "100 sítí, jeden dataset, různé odpovědi." },
@@ -39,19 +30,13 @@ export const ui = {
     en: "I trained the same convolutional network on FashionMNIST a hundred times, changing only the random seed. Every copy ends up about equally accurate. They still don't agree with each other.",
     cs: "Stejnou konvoluční síť jsem na FashionMNIST natrénoval stokrát a měnil jen náhodný seed. Všechny kopie jsou zhruba stejně přesné. Přesto se mezi sebou neshodnou.",
   },
-  "thesis.p2": {
-    en: "The matrix shows how often each pair of models predicts the same class on the 10,000 test images. Hover over it to compare any two. The thesis then looks at why: loss surfaces around each solution, interpolation between models and the barriers that separate them.",
-    cs: "Matice ukazuje, jak často každá dvojice modelů předpoví na 10 000 testovacích obrázcích stejnou třídu. Najeď na ni myší a porovnej libovolné dva. Bakalářka pak zkoumá proč: ztrátové plochy kolem každého řešení, interpolaci mezi modely a bariéry, které je oddělují.",
-  },
+  "thesis.p2": { en: "The matrix shows how strongly the predictions of each pair of models correlate across the 10,000 test images. Hover over it to compare any two. The thesis then looks at why they differ: loss surfaces around each solution, interpolation between models and the barriers that separate them.", cs: "Matice ukazuje, jak silně spolu korelují predikce každé dvojice modelů na 10 000 testovacích obrázcích. Najeď na ni myší a porovnej libovolné dva. Bakalářka pak zkoumá, proč se liší: ztrátové plochy kolem každého řešení, interpolaci mezi modely a bariéry, které je oddělují." },
   "thesis.stat.agree": { en: "average agreement between two models", cs: "průměrná shoda dvou modelů" },
   "thesis.stat.range": { en: "range across all 4,950 pairs", cs: "rozpětí přes všech 4 950 dvojic" },
   "thesis.stat.unan": { en: "of test images on which all 100 agree", cs: "testovacích obrázků, kde se shodne všech 100" },
-  "thesis.matrix.label": { en: "Prediction agreement between 100 models", cs: "Shoda predikcí mezi 100 modely" },
+  "thesis.matrix.label": { en: "Correlation of predictions, 100 models", cs: "Korelace predikcí 100 modelů" },
   "thesis.matrix.hint": { en: "Hover or tap a cell", cs: "Najeď nebo klepni na buňku" },
-  "thesis.matrix.pair": { en: "Model {a} and model {b} agree on {v} of images", cs: "Model {a} a model {b} se shodnou na {v} obrázků" },
-  "thesis.matrix.sorted": { en: "Models are ordered so similar ones sit next to each other.", cs: "Modely jsou seřazené tak, aby podobné byly vedle sebe." },
-  "thesis.matrix.low": { en: "less agreement", cs: "menší shoda" },
-  "thesis.matrix.high": { en: "more", cs: "větší" },
+  "thesis.matrix.pair": { en: "Models {a} and {b}: correlation {r}, same answer on {v} of images", cs: "Modely {a} a {b}: korelace {r}, stejná odpověď na {v} obrázků" },
   "thesis.classes": { en: "Where they disagree most", cs: "Kde se neshodnou nejvíc" },
   "thesis.classes.note": {
     en: "Share of images in each class where at least one model votes differently.",
@@ -64,6 +49,7 @@ export const ui = {
   "projects.nda": { en: "Client work under NDA", cs: "Klientská práce pod NDA" },
   "projects.github": { en: "View on GitHub", cs: "Zobrazit na GitHubu" },
   "projects.unpublished": { en: "Not published", cs: "Nezveřejněno" },
+  "projects.live": { en: "Live at", cs: "Běží na" },
   "projects.all": { en: "All repositories", cs: "Všechny repozitáře" },
 
   "work.title": { en: "Experience", cs: "Praxe" },
@@ -82,10 +68,7 @@ export const ui = {
   },
 
   "contact.title": { en: "Let's talk.", cs: "Ozvěte se." },
-  "contact.text": {
-    en: "I'm open to a full-time junior developer role after graduation. Email is the fastest way to reach me.",
-    cs: "Po dokončení studia hledám plný úvazek jako junior vývojář. Nejrychleji mě zastihnete e-mailem.",
-  },
+  "contact.text": { en: "Have a project or a role in mind? Email is the fastest way to reach me.", cs: "Máte projekt nebo pozici? Nejrychleji mě zastihnete e-mailem." },
   "contact.cta": { en: "Write an email", cs: "Napsat e-mail" },
   "contact.phone": { en: "Phone", cs: "Telefon" },
   "contact.copy": { en: "Copy email", cs: "Kopírovat e-mail" },

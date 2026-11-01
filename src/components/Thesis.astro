@@ -23,11 +23,15 @@ const stats = [
   { v: pct(data.stats.unanimous, 0), l: t("thesis.stat.unan") },
 ];
 
+const ramp = ["#120a0b", "#3b0d16", "#7a1022", "#b8162e", "#e2492f", "#f0883a", "#f5c45e", "#fbeec0"];
+const fmt = (v: number, d: number) => v.toLocaleString(lang === "cs" ? "cs-CZ" : "en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
+
 const payload = JSON.stringify({
-  m: data.agreement,
-  order: data.order,
-  min: data.scale.lo,
-  max: data.scale.hi,
+  m: data.corr,
+  a: data.agreement,
+  min: data.corrStats.min,
+  max: data.corrStats.max,
+  ramp,
   pair: t("thesis.matrix.pair"),
   hint: t("thesis.matrix.hint"),
   locale: lang === "cs" ? "cs-CZ" : "en-US",
@@ -58,13 +62,13 @@ const payload = JSON.stringify({
       </p>
     </div>
 
-    <figure class="reveal glass m-0 rounded-3xl p-4 sm:p-6">
+    <figure class="reveal glass m-0 self-start rounded-3xl p-4 sm:p-6">
       <figcaption class="mb-4 flex flex-wrap items-baseline justify-between gap-2">
         <span class="font-display text-lg font-semibold">{t("thesis.matrix.label")}</span>
         <span class="flex items-center gap-2 text-[0.8125rem] text-cream-3">
-          {t("thesis.matrix.low")}
-          <span class="h-2 w-20 rounded-full" style="background:linear-gradient(90deg,#1c1414,#c8102e,#d6a85c)"></span>
-          {t("thesis.matrix.high")}
+          <span class="tnum">{fmt(data.corrStats.min, 3)}</span>
+          <span class="h-2 w-24 rounded-full" style={`background:linear-gradient(90deg,${ramp.join(",")})`}></span>
+          <span class="tnum">{fmt(data.corrStats.max, 3)}</span>
         </span>
       </figcaption>
       <div class="relative">
@@ -77,7 +81,6 @@ const payload = JSON.stringify({
         ></canvas>
       </div>
       <p id="agree-readout" class="tnum mt-4 min-h-[1.6em] text-[0.9375rem] text-cream-2" aria-live="polite">{t("thesis.matrix.hint")}</p>
-      <p class="mt-1 text-[0.8125rem] text-cream-3">{t("thesis.matrix.sorted")}</p>
     </figure>
   </div>
 
@@ -99,23 +102,22 @@ const payload = JSON.stringify({
 </Section>
 
 <script>
-  type Payload = { m: number[][]; order: number[]; min: number; max: number; pair: string; hint: string; locale: string };
+  type Payload = { m: number[][]; a: number[][]; min: number; max: number; ramp: string[]; pair: string; hint: string; locale: string };
   const canvas = document.getElementById("agree-canvas") as HTMLCanvasElement | null;
   const readout = document.getElementById("agree-readout");
   if (canvas && readout) {
     const p: Payload = JSON.parse(canvas.dataset.payload!);
     const n = p.m.length;
     const ctx = canvas.getContext("2d")!;
-    const stops = [
-      [28, 20, 20],
-      [200, 16, 46],
-      [214, 168, 92],
-    ];
-    const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+    const hex = (h: string) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+    const stops = p.ramp.map(hex);
     const color = (v: number) => {
-      const t = Math.min(1, Math.max(0, (v / 1000 - p.min) / (p.max - p.min)));
-      const [a, b, k] = t < 0.5 ? [stops[0], stops[1], t * 2] : [stops[1], stops[2], (t - 0.5) * 2];
-      return `rgb(${lerp(a[0], b[0], k)},${lerp(a[1], b[1], k)},${lerp(a[2], b[2], k)})`;
+      const t = Math.min(1, Math.max(0, (v / 10000 - p.min) / (p.max - p.min)));
+      const x = t * (stops.length - 1);
+      const k = Math.min(stops.length - 2, Math.floor(x));
+      const f = x - k;
+      const [a, b] = [stops[k], stops[k + 1]];
+      return `rgb(${a[0] + (b[0] - a[0]) * f},${a[1] + (b[1] - a[1]) * f},${a[2] + (b[2] - a[2]) * f})`;
     };
 
     let hover: [number, number] | null = null;
@@ -129,8 +131,7 @@ const payload = JSON.stringify({
       const c = size / n;
       for (let i = 0; i < n; i++) {
         for (let j = 0; j < n; j++) {
-          const a = p.order[i], b = p.order[j];
-          ctx.fillStyle = a === b ? "rgba(242,236,228,0.12)" : color(p.m[a][b]);
+          ctx.fillStyle = i === j ? p.ramp[p.ramp.length - 1] : color(p.m[i][j]);
           ctx.fillRect(j * c, i * c, Math.ceil(c), Math.ceil(c));
         }
       }
@@ -151,10 +152,10 @@ const payload = JSON.stringify({
       const i = Math.floor(((e.clientY - r.top) / r.height) * n);
       if (i < 0 || j < 0 || i >= n || j >= n) return;
       hover = [i, j];
-      const a = p.order[i], b = p.order[j];
-      const v = a === b ? 1000 : p.m[a][b];
-      const val = (v / 10).toLocaleString(p.locale, { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + " %";
-      readout.textContent = p.pair.replace("{a}", String(a + 1)).replace("{b}", String(b + 1)).replace("{v}", val);
+      const corr = i === j ? 1 : p.m[i][j] / 10000;
+      const ag = i === j ? 100 : p.a[i][j] / 10;
+      const nf = (v: number, d: number) => v.toLocaleString(p.locale, { minimumFractionDigits: d, maximumFractionDigits: d });
+      readout.textContent = p.pair.replace("{a}", String(i)).replace("{b}", String(j)).replace("{r}", nf(corr, 4)).replace("{v}", nf(ag, 1) + " %");
       draw();
     };
 

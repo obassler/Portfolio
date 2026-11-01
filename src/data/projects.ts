@@ -36,6 +36,18 @@ export const projects: Project[] = [
     stack: ["Next.js", "TypeScript", "PostgreSQL", "Redis", "Playwright"],
   },
   {
+    slug: "screenomat",
+    title: { en: "Screenomat", cs: "Screenomat" },
+    kind: { en: "Work, PMLOGY", cs: "Práce, PMLOGY" },
+    year: "2025–",
+    description: {
+      en: "Czech digital signage software for shops, restaurants, waiting rooms and offices. Content for any number of screens is built in a drag-and-drop editor, scheduled by time and day, and managed remotely from the browser, with a media library and playback reports. Runs on an ordinary screen or TV, no special hardware.",
+      cs: "Český software pro digitální obrazovky v obchodech, restauracích, čekárnách nebo kancelářích. Obsah pro libovolný počet obrazovek se skládá v drag-and-drop editoru, plánuje podle času a dnů a spravuje na dálku z prohlížeče, s knihovnou médií a reporty přehrávání. Běží na běžné obrazovce nebo televizi bez speciálního hardwaru.",
+    },
+    stack: [],
+    live: "https://screenomat.cz",
+  },
+  {
     slug: "dnd-manager",
     title: { en: "D&D Campaign Manager", cs: "Správce D&D kampaně" },
     kind: { en: "University project", cs: "Projekt na univerzitě" },
@@ -89,8 +101,8 @@ export const projects: Project[] = [
     kind: { en: "Commission", cs: "Zakázka" },
     year: "",
     description: {
-      en: "A game built around Slavic mythology, made for an art-school student's project.",
-      cs: "Hra postavená na slovanské mytologii, vytvořená pro projekt studentky umělecké školy.",
+      en: "A game built around Slavic mythology, made for an art-school student as part of her bachelor's thesis.",
+      cs: "Hra postavená na slovanské mytologii, vytvořená pro studentku umělecké školy jako součást její bakalářské práce.",
     },
     stack: ["Unity", "C#"],
   },

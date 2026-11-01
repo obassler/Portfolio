@@ -16,13 +16,15 @@ const list = projects.filter((p) => p.slug !== "loss-landscapes");
 <Section id="projects" title={t("projects.title")}>
   <ul class="grid gap-4 md:grid-cols-2 md:gap-5">
     {list.map((p, i) => {
-      const Tag = p.github ? "a" : "div";
+      const href = p.github ?? p.live;
+      const Tag = href ? "a" : "div";
+      const nda = p.slug === "schedule-box" || p.slug === "screenomat";
       return (
         <li class={`reveal ${i === 0 ? "md:col-span-2" : ""}`}>
           <Tag
-            href={p.github}
+            href={href}
             class="tilt glass group flex h-full flex-col rounded-3xl p-6 text-cream no-underline sm:p-8"
-            data-tilt={p.github ? "" : undefined}
+            data-tilt={href ? "" : undefined}
           >
             <p class="text-[0.875rem] text-gold">
               {p.kind[lang]}{p.year && <span class="tnum text-cream-3"> &nbsp;{p.year}</span>}
@@ -31,13 +33,19 @@ const list = projects.filter((p) => p.slug !== "loss-landscapes");
             <p class={`mt-3 leading-relaxed text-cream-2 ${i === 0 ? "max-w-[46rem] text-lg" : ""}`}>{p.description[lang]}</p>
 
             <div class="mt-auto flex flex-wrap items-end justify-between gap-4 pt-7">
-              <ul class="flex flex-wrap gap-2" aria-label="Stack">
+              <ul class="flex flex-wrap gap-2 empty:hidden" aria-label="Stack">
                 {p.stack.map((s) => (
                   <li class="rounded-full border border-white/10 px-3 py-1 text-[0.8125rem] text-cream-2">{s}</li>
                 ))}
               </ul>
               <span class="text-[0.875rem] text-cream-3 group-hover:text-cream">
-                {p.github ? t("projects.github") : p.slug === "schedule-box" ? t("projects.nda") : t("projects.unpublished")}
+                {p.github
+                  ? t("projects.github")
+                  : p.live
+                    ? `${nda ? t("projects.nda") + " · " : ""}${t("projects.live")} ${p.live.replace("https://", "")}`
+                    : nda
+                      ? t("projects.nda")
+                      : t("projects.unpublished")}
               </span>
             </div>
           </Tag>
