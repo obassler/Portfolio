@@ -2,8 +2,7 @@
 import type { Lang } from "@/i18n/ui";
 import { useTranslations } from "@/i18n/utils";
 import { projects } from "@/data/projects";
-import ProjectCard from "./ProjectCard.astro";
-import ScrollReveal from "./ScrollReveal.astro";
+import Section from "./Section.astro";
 
 interface Props {
   lang: Lang;
@@ -11,22 +10,51 @@ interface Props {
 
 const { lang } = Astro.props;
 const t = useTranslations(lang);
-
-const featuredProjects = projects.filter((p) => p.featured);
+const [lead, ...rest] = projects;
 ---
 
-<section id="projects" class="px-4 py-24 sm:px-6">
-  <div class="mx-auto max-w-6xl">
-    <ScrollReveal>
-      <h2 class="mb-12 text-3xl font-bold sm:text-4xl">
-        <span class="gradient-text">{t("projects.title")}</span>
-      </h2>
-    </ScrollReveal>
+<Section id="projects" title={t("projects.title")}>
+  <!-- The thesis gets the most room; everything else is a plain list. -->
+  <article class="pb-10">
+    <p class="text-sm text-ink-3">{lead.kind[lang]}, <span class="tnum">{lead.year}</span></p>
+    <h3 class="mt-1 text-[clamp(1.5rem,3vw,2rem)] font-bold leading-tight tracking-tight">{lead.title[lang]}</h3>
+    <p class="mt-4 max-w-[42rem] text-lg leading-relaxed text-ink-2">{lead.description[lang]}</p>
+    <p class="mt-4 text-[0.9375rem] text-ink-3">{lead.stack.join(", ")}</p>
+    {lead.github && (
+      <p class="mt-3 text-[0.9375rem]"><a href={lead.github} class="text-water underline">{t("projects.code")}</a></p>
+    )}
+  </article>
 
-    <div class="grid gap-6 sm:grid-cols-2">
-      {featuredProjects.map((project, i) => (
-        <ProjectCard project={project} lang={lang} delay={i + 1} />
-      ))}
-    </div>
-  </div>
-</section>
+  <ul class="divide-y divide-rule border-t border-rule">
+    {rest.map((p) => (
+      <li class="grid gap-x-8 gap-y-2 py-7 sm:grid-cols-[minmax(0,1fr)_11rem]">
+        <div>
+          <h3 class="text-lg font-semibold leading-snug">
+            {p.github ? (
+              <a href={p.github} class="text-ink no-underline hover:text-water hover:underline">{p.title[lang]}</a>
+            ) : (
+              p.title[lang]
+            )}
+          </h3>
+          <p class="mt-2 max-w-[40rem] leading-relaxed text-ink-2">{p.description[lang]}</p>
+          <p class="mt-2 text-[0.9375rem] text-ink-3">{p.stack.join(", ")}</p>
+        </div>
+        <div class="text-[0.9375rem] text-ink-3 sm:text-right">
+          <p>{p.kind[lang]}</p>
+          {p.year && <p class="tnum">{p.year}</p>}
+          <p class="mt-1">
+            {p.github ? (
+              <a href={p.github} class="text-water underline">GitHub</a>
+            ) : (
+              <span>{p.slug === "schedule-box" ? t("projects.private") : t("projects.noRepo")}</span>
+            )}
+          </p>
+        </div>
+      </li>
+    ))}
+  </ul>
+
+  <p class="mt-8 text-[0.9375rem]">
+    <a href="https://github.com/obassler?tab=repositories" class="text-water underline">{t("projects.all")}</a>
+  </p>
+</Section>

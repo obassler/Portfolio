@@ -1,54 +1,37 @@
-export interface SkillCategory {
-  key: string;
-  items: Skill[];
+type T = { en: string; cs: string };
+
+export interface SkillGroup {
+  label: T;
+  items: string[];
 }
 
-export interface Skill {
-  name: string;
-  icon?: string;
-}
-
-export const skillCategories: SkillCategory[] = [
+export const skillGroups: SkillGroup[] = [
   {
-    key: "languages",
-    items: [
-      { name: "Java", icon: "simple-icons:oracle" },
-      { name: "Python", icon: "simple-icons:python" },
-      { name: "C#", icon: "simple-icons:csharp" },
-      { name: "JavaScript", icon: "simple-icons:javascript" },
-      { name: "Kotlin", icon: "simple-icons:kotlin" },
-      { name: "SQL", icon: "simple-icons:postgresql" },
-    ],
+    label: { en: "Languages", cs: "Jazyky" },
+    items: ["Java", "TypeScript", "JavaScript", "Python", "C#", "Kotlin", "SQL"],
   },
   {
-    key: "frameworks",
-    items: [
-      { name: "Spring Boot", icon: "simple-icons:springboot" },
-      { name: "React", icon: "simple-icons:react" },
-      { name: "Vue.js", icon: "simple-icons:vuedotjs" },
-      { name: "PyTorch", icon: "simple-icons:pytorch" },
-      { name: "Unity", icon: "simple-icons:unity" },
-      { name: "Astro", icon: "simple-icons:astro" },
-      { name: "Git", icon: "simple-icons:git" },
-      { name: "Linux", icon: "simple-icons:linux" },
-      { name: "Oracle DB", icon: "simple-icons:oracle" },
-    ],
+    label: { en: "Backend", cs: "Backend" },
+    items: ["Spring Boot", "Spring Security + JWT", "JPA / Hibernate", "Node.js", "REST APIs", "PostgreSQL", "MySQL", "Firebase"],
   },
   {
-    key: "design",
-    items: [
-      { name: "Cinema 4D", icon: "simple-icons:cinema4d" },
-      { name: "3D Modeling", icon: "lucide:box" },
-      { name: "VR Development", icon: "lucide:glasses" },
-    ],
+    label: { en: "Frontend", cs: "Frontend" },
+    items: ["React", "Angular", "Vue.js", "Next.js", "Astro", "Tailwind CSS", "HTML & CSS"],
   },
   {
-    key: "networking",
-    items: [
-      { name: "CCNA 1-3", icon: "simple-icons:cisco" },
-      { name: "Cisco Security", icon: "lucide:shield-check" },
-      { name: "DNS", icon: "lucide:globe" },
-      { name: "Network Admin", icon: "lucide:network" },
-    ],
+    label: { en: "Testing & tooling", cs: "Testování a nástroje" },
+    items: ["Playwright", "Smoke & manual testing", "Git", "Docker", "Linux", "Maven", "Vite"],
+  },
+  {
+    label: { en: "Machine learning", cs: "Strojové učení" },
+    items: ["PyTorch", "PyTorch Lightning", "Hydra", "Optuna", "Weights & Biases"],
+  },
+  {
+    label: { en: "Games & 3D", cs: "Hry a 3D" },
+    items: ["Unity", "VR (OpenXR)", "Cinema 4D"],
+  },
+  {
+    label: { en: "Networks", cs: "Sítě" },
+    items: ["Cisco CCNA 1 & 3", "Network Security", "Linux servers", "NAS, NAT, DNS"],
   },
 ];

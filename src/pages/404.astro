@@ -1,35 +1,11 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { Icon } from "astro-icon/components";
 ---
 
-<BaseLayout title="404 - Page Not Found" description="The page you're looking for doesn't exist.">
-  <section class="flex min-h-[calc(100vh-8rem)] flex-col items-center justify-center px-4">
-    <div class="text-center">
-      <p class="font-mono text-sm text-pink">Error 404</p>
-
-      <h1 class="mt-3 text-7xl font-bold tracking-tight sm:text-9xl">
-        <span class="gradient-text">4</span>
-        <span class="inline-block text-text-muted">
-          <Icon name="lucide:ghost" class="inline h-16 w-16 sm:h-24 sm:w-24" />
-        </span>
-        <span class="gradient-text">4</span>
-      </h1>
-
-      <p class="mt-6 text-lg text-text-secondary">
-        This page wandered off into the void.
-      </p>
-      <p class="mt-1 text-sm text-text-muted">
-        Maybe it's exploring a loss landscape somewhere...
-      </p>
-
-      <a
-        href="/"
-        class="mt-10 inline-flex items-center gap-2 rounded-lg bg-pink px-6 py-3 text-sm font-medium text-white transition-all hover:bg-pink/90 hover:shadow-lg hover:shadow-pink/25"
-      >
-        <Icon name="lucide:arrow-left" class="h-4 w-4" />
-        Back to Home
-      </a>
-    </div>
+<BaseLayout title="Page not found | Ondřej Bassler">
+  <section class="mx-auto max-w-6xl px-4 py-24 sm:px-8">
+    <h1 class="text-4xl font-extrabold tracking-tight">This page doesn't exist</h1>
+    <p class="mt-4 max-w-[34rem] text-lg text-ink-2">The address may be mistyped, or the page has moved. Stránka neexistuje, adresa je nejspíš špatně.</p>
+    <p class="mt-8"><a href="/" class="text-water underline">Go to the homepage</a> &nbsp; <a href="/cs/" class="text-water underline">Na hlavní stránku</a></p>
   </section>
 </BaseLayout>

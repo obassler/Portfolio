@@ -1,9 +1,8 @@
 ---
 import type { Lang } from "@/i18n/ui";
 import { useTranslations } from "@/i18n/utils";
-import { education } from "@/data/education";
-import ScrollReveal from "./ScrollReveal.astro";
-import { Icon } from "astro-icon/components";
+import { education, certificates } from "@/data/education";
+import Section from "./Section.astro";
 
 interface Props {
   lang: Lang;
@@ -13,54 +12,32 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 ---
 
-<section id="education" class="px-4 py-24 sm:px-6">
-  <div class="mx-auto max-w-6xl">
-    <ScrollReveal>
-      <h2 class="mb-12 text-3xl font-bold sm:text-4xl">
-        <span class="gradient-text">{t("education.title")}</span>
-      </h2>
-    </ScrollReveal>
+<Section id="education" title={t("education.title")}>
+  <ol class="space-y-8">
+    {education.map((e) => (
+      <li class="grid gap-x-8 gap-y-1 sm:grid-cols-[10rem_minmax(0,1fr)]">
+        <p class="tnum pt-0.5 text-[0.9375rem] text-ink-3">{e.period[lang]}</p>
+        <div>
+          <h3 class="text-lg font-semibold leading-snug">{e.school[lang]}</h3>
+          <p class="text-ink-2">{e.programme[lang]}</p>
+          {e.note && <p class="mt-2 text-ink-2">{e.note[lang]}</p>}
+        </div>
+      </li>
+    ))}
+  </ol>
 
-    <div class="relative space-y-8">
-      <!-- Timeline line -->
-      <div class="absolute left-4 top-0 hidden h-full w-px bg-border sm:block"></div>
-
-      {education.map((entry, i) => (
-        <ScrollReveal delay={i + 1}>
-          <div class="relative sm:pl-12">
-            <!-- Timeline dot -->
-            <div class="absolute left-2.5 top-1.5 hidden h-3 w-3 rounded-full border-2 border-pink bg-bg-primary sm:block"></div>
-
-            <div class="rounded-xl border border-border bg-bg-card p-6 transition-colors hover:border-pink/40">
-              <div class="mb-2 flex flex-wrap items-center gap-3">
-                <h3 class="text-lg font-semibold text-text-primary">
-                  {entry.title[lang]}
-                </h3>
-                <span class="rounded-full bg-pink/10 px-2.5 py-0.5 text-xs font-medium text-pink">
-                  {entry.period}
-                </span>
-              </div>
-
-              <p class="mb-3 flex items-center gap-1.5 text-sm text-text-muted">
-                <Icon name="lucide:map-pin" class="h-3.5 w-3.5" />
-                {entry.institution[lang]}
-              </p>
-
-              <p class="mb-4 text-sm leading-relaxed text-text-secondary">
-                {entry.description[lang]}
-              </p>
-
-              <div class="flex flex-wrap gap-2">
-                {entry.tags.map((tag) => (
-                  <span class="rounded-full bg-bg-secondary px-2.5 py-0.5 text-xs text-text-muted">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </ScrollReveal>
-      ))}
+  <dl class="mt-12 grid gap-x-10 gap-y-6 sm:grid-cols-2">
+    <div>
+      <dt class="font-semibold">{t("education.certs")}</dt>
+      <dd class="mt-1 leading-relaxed text-ink-2">{certificates.join(", ")}</dd>
     </div>
-  </div>
-</section>
+    <div>
+      <dt class="font-semibold">{t("languages.title")}</dt>
+      <dd class="mt-1 leading-relaxed text-ink-2">{t("languages.list")}</dd>
+    </div>
+    <div class="sm:col-span-2">
+      <dt class="font-semibold">{t("life.title")}</dt>
+      <dd class="mt-1 max-w-[42rem] leading-relaxed text-ink-2">{t("life.text")}</dd>
+    </div>
+  </dl>
+</Section>

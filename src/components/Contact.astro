@@ -1,8 +1,7 @@
 ---
 import type { Lang } from "@/i18n/ui";
 import { useTranslations } from "@/i18n/utils";
-import ScrollReveal from "./ScrollReveal.astro";
-import { Icon } from "astro-icon/components";
+import Section from "./Section.astro";
 
 interface Props {
   lang: Lang;
@@ -12,79 +11,22 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 ---
 
-<section id="contact" class="bg-bg-secondary px-4 py-24 sm:px-6">
-  <div class="mx-auto max-w-2xl text-center">
-    <ScrollReveal>
-      <h2 class="mb-6 text-3xl font-bold sm:text-4xl">
-        <span class="gradient-text">{t("contact.title")}</span>
-      </h2>
-    </ScrollReveal>
-
-    <ScrollReveal delay={1}>
-      <p class="mb-10 text-text-secondary">
-        {t("contact.text")}
-      </p>
-    </ScrollReveal>
-
-    <ScrollReveal delay={2}>
-      <a
-        href="mailto:Ondrej.bassler@gmail.com"
-        class="inline-flex items-center gap-2 rounded-lg bg-pink px-8 py-3.5 text-sm font-medium text-white transition-all hover:bg-pink/90 hover:shadow-lg hover:shadow-pink/25"
-      >
-        <Icon name="lucide:mail" class="h-4 w-4" />
-        {t("contact.cta")}
-      </a>
-    </ScrollReveal>
-
-    <!-- Contact details -->
-    <ScrollReveal delay={3}>
-      <div class="mt-10 grid gap-4 sm:grid-cols-2">
-        <a
-          href="mailto:Ondrej.bassler@gmail.com"
-          class="flex items-center justify-center gap-2 rounded-lg border border-border bg-bg-card px-4 py-3 text-sm text-text-secondary transition-colors hover:border-pink/40 hover:text-pink"
-        >
-          <Icon name="lucide:mail" class="h-4 w-4" />
-          Ondrej.bassler@gmail.com
-        </a>
-        <a
-          href="tel:+420737018693"
-          class="flex items-center justify-center gap-2 rounded-lg border border-border bg-bg-card px-4 py-3 text-sm text-text-secondary transition-colors hover:border-pink/40 hover:text-pink"
-        >
-          <Icon name="lucide:phone" class="h-4 w-4" />
-          +420 737 018 693
-        </a>
-      </div>
-    </ScrollReveal>
-
-    <!-- Social links -->
-    <ScrollReveal delay={4}>
-      <div class="mt-8 flex items-center justify-center gap-6">
-        <a
-          href="https://github.com/obassler"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="GitHub"
-          class="text-text-muted transition-colors hover:text-pink"
-        >
-          <Icon name="simple-icons:github" class="h-6 w-6" />
-        </a>
-        <a
-          href="https://www.instagram.com/los_onnielos/"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Instagram"
-          class="text-text-muted transition-colors hover:text-pink"
-        >
-          <Icon name="simple-icons:instagram" class="h-6 w-6" />
-        </a>
-        <span
-          class="flex items-center gap-1.5 text-text-muted"
-          title="Discord: onniel09"
-        >
-          <Icon name="simple-icons:discord" class="h-6 w-6" />
-          <span class="text-sm">onniel09</span>
-        </span>
-      </div>
-    </ScrollReveal>
-  </div>
-</section>
+<Section id="contact" title={t("contact.title")}>
+  <p class="max-w-[36rem] text-lg leading-relaxed text-ink-2">{t("contact.text")}</p>
+  <p class="mt-6">
+    <a
+      href="mailto:ondrej.bassler@gmail.com"
+      class="break-all text-[clamp(1.5rem,4.5vw,2.75rem)] font-bold tracking-tight text-ink decoration-water decoration-2 hover:text-water"
+    >ondrej.bassler@gmail.com</a>
+  </p>
+  <dl class="mt-8 flex flex-wrap gap-x-10 gap-y-3 text-[0.9375rem]">
+    <div>
+      <dt class="text-ink-3">{t("contact.phone")}</dt>
+      <dd><a href="tel:+420737018693" class="tnum text-ink no-underline hover:underline">+420 737 018 693</a></dd>
+    </div>
+    <div>
+      <dt class="text-ink-3">GitHub</dt>
+      <dd><a href="https://github.com/obassler" class="text-ink no-underline hover:underline">github.com/obassler</a></dd>
+    </div>
+  </dl>
+</Section>

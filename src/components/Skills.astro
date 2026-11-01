@@ -1,9 +1,8 @@
 ---
 import type { Lang } from "@/i18n/ui";
 import { useTranslations } from "@/i18n/utils";
-import { skillCategories } from "@/data/skills";
-import ScrollReveal from "./ScrollReveal.astro";
-import { Icon } from "astro-icon/components";
+import { skillGroups } from "@/data/skills";
+import Section from "./Section.astro";
 
 interface Props {
   lang: Lang;
@@ -11,41 +10,15 @@ interface Props {
 
 const { lang } = Astro.props;
 const t = useTranslations(lang);
-
-const categoryLabels: Record<string, string> = {
-  languages: t("skills.languages"),
-  frameworks: t("skills.frameworks"),
-  design: t("skills.design"),
-  networking: t("skills.networking"),
-};
 ---
 
-<section id="skills" class="bg-bg-secondary px-4 py-24 sm:px-6">
-  <div class="mx-auto max-w-6xl">
-    <ScrollReveal>
-      <h2 class="mb-12 text-3xl font-bold sm:text-4xl">
-        <span class="gradient-text">{t("skills.title")}</span>
-      </h2>
-    </ScrollReveal>
-
-    <div class="grid gap-8 sm:grid-cols-2">
-      {skillCategories.map((cat, catIdx) => (
-        <ScrollReveal delay={catIdx + 1}>
-          <div class="rounded-xl border border-border bg-bg-card p-6">
-            <h3 class="mb-4 text-lg font-semibold text-text-primary">
-              {categoryLabels[cat.key]}
-            </h3>
-            <div class="flex flex-wrap gap-3">
-              {cat.items.map((skill) => (
-                <div class="flex items-center gap-2 rounded-lg bg-bg-secondary px-3 py-2 text-sm text-text-secondary transition-colors hover:text-pink">
-                  {skill.icon && <Icon name={skill.icon} class="h-4 w-4" />}
-                  {skill.name}
-                </div>
-              ))}
-            </div>
-          </div>
-        </ScrollReveal>
-      ))}
-    </div>
-  </div>
-</section>
+<Section id="skills" title={t("skills.title")}>
+  <dl class="grid gap-x-10 gap-y-6 sm:grid-cols-2">
+    {skillGroups.map((g) => (
+      <div>
+        <dt class="font-semibold">{g.label[lang]}</dt>
+        <dd class="mt-1 leading-relaxed text-ink-2">{g.items.join(", ")}</dd>
+      </div>
+    ))}
+  </dl>
+</Section>

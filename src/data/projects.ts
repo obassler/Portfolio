@@ -1,147 +1,109 @@
+type T = { en: string; cs: string };
+
 export interface Project {
   slug: string;
-  title: { en: string; cs: string };
-  description: { en: string; cs: string };
-  tags: string[];
-  icon: string;
+  title: T;
+  kind: T;
+  year: string;
+  description: T;
+  stack: string[];
   github?: string;
   live?: string;
-  featured: boolean;
 }
 
 export const projects: Project[] = [
   {
-    slug: "schedule-box",
-    title: {
-      en: "ScheduleBox",
-      cs: "ScheduleBox",
-    },
-    description: {
-      en: "An all-in-one AI-powered business platform for reservation-based services (salons, fitness, clinics, and more), developed for PMLOGY s.r.o. Features a booking system, payment infrastructure, CRM, loyalty program, marketing automation, and AI-driven analytics. Built with a microservices architecture spanning 17 services.",
-      cs: "All-in-one AI-powered business platforma pro služby založené na rezervacích (salóny, fitness, kliniky a další), vyvíjená pro firmu PMLOGY s.r.o. Obsahuje rezervační systém, platební infrastrukturu, CRM, věrnostní program, automatizaci marketingu a AI analytiku. Postavena na mikroservisní architektuře s 17 službami.",
-    },
-    tags: ["Next.js", "TypeScript", "PostgreSQL", "Redis", "AI/ML"],
-    icon: "lucide:calendar-check",
-    featured: true,
-  },
-  {
     slug: "loss-landscapes",
-    title: {
-      en: "Loss Landscapes in Neural Networks",
-      cs: "Loss Landscapes v neuronových sítích",
-    },
+    title: { en: "Loss Landscapes in Neural Networks", cs: "Loss landscapes v neuronových sítích" },
+    kind: { en: "Bachelor's thesis", cs: "Bakalářská práce" },
+    year: "2025–2026",
     description: {
-      en: "Bachelor's thesis exploring loss landscape visualization in neural networks. Trained 100 CNN models on FashionMNIST with different random seeds and analyzed prediction correlation matrices to study how different minima relate to each other. Built with PyTorch, PyTorch Lightning, Hydra, and Weights & Biases.",
-      cs: "Bakalářská práce zkoumající vizualizaci loss landscape v neuronových sítích. Natrénováno 100 CNN modelů na FashionMNIST s různými náhodnými seedy a analyzovány korelační matice predikcí pro studium vztahů mezi různými minimy. Vytvořeno pomocí PyTorch, PyTorch Lightning, Hydra a Weights & Biases.",
+      en: "I trained 100 CNNs on FashionMNIST that differ only in their random seed and optimizer, then compared where they ended up: 2D and 3D loss surfaces, linear interpolation between models, loss barriers with batch-norm recalibration and per-class prediction disagreement. Hyperparameters come from an Optuna sweep; experiments run in parallel and are logged to Weights & Biases. Best single model reaches about 91.9 % validation accuracy.",
+      cs: "Natrénoval jsem 100 konvolučních sítí na FashionMNIST, které se liší jen náhodným seedem a optimalizátorem, a porovnával, kde skončily: 2D a 3D ztrátové plochy, lineární interpolace mezi modely, ztrátové bariéry s přepočtem batch-normu a neshoda predikcí po třídách. Hyperparametry pochází z Optuna sweepu, experimenty běží paralelně a logují se do Weights & Biases. Nejlepší model má přibližně 91,9 % validační přesnosti.",
     },
-    tags: ["Python", "PyTorch", "Machine Learning", "CNN", "W&B"],
-    icon: "lucide:brain",
+    stack: ["Python", "PyTorch Lightning", "Hydra", "Optuna", "W&B"],
     github: "https://github.com/obassler/FashionMnist-OSU",
-    featured: true,
   },
   {
-    slug: "ghost-stories-vr",
-    title: {
-      en: "Ghost Stories VR",
-      cs: "Ghost Stories VR",
-    },
+    slug: "schedule-box",
+    title: { en: "ScheduleBox", cs: "ScheduleBox" },
+    kind: { en: "Work, PMLOGY", cs: "Práce, PMLOGY" },
+    year: "2025–",
     description: {
-      en: "A VR horror game built in C# featuring immersive 3D environments and interactive gameplay mechanics. Combines game development skills with virtual reality technology to create an engaging horror experience.",
-      cs: "VR hororová hra vytvořená v C# s pohlcujícím 3D prostředím a interaktivními herními mechanikami. Spojuje dovednosti v herním vývoji s technologií virtuální reality pro vytvoření poutavého hororového zážitku.",
+      en: "Booking and business platform for reservation-based services such as salons, gyms and clinics: reservations, payments, CRM, a loyalty programme and marketing automation. I work on new features and fixes across frontend and backend, and cover them with Playwright and smoke tests.",
+      cs: "Rezervační a byznysová platforma pro služby jako salony, fitka nebo kliniky: rezervace, platby, CRM, věrnostní program a automatizace marketingu. Vyvíjím nové funkce a opravy na frontendu i backendu a pokrývám je testy v Playwrightu a smoke testy.",
     },
-    tags: ["C#", "VR", "Unity", "Game Dev", "3D"],
-    icon: "lucide:gamepad-2",
-    github: "https://github.com/obassler/ghoststories",
-    featured: true,
+    stack: ["Next.js", "TypeScript", "PostgreSQL", "Redis", "Playwright"],
   },
   {
-    slug: "chat-app",
-    title: {
-      en: "Real-Time Chat Application",
-      cs: "Chatovací aplikace v reálném čase",
-    },
+    slug: "dnd-manager",
+    title: { en: "D&D Campaign Manager", cs: "Správce D&D kampaně" },
+    kind: { en: "University project", cs: "Projekt na univerzitě" },
+    year: "2025–2026",
     description: {
-      en: "A real-time chat application built in Java as part of the Software Engineering course. Developed in collaboration with a classmate, featuring multi-user messaging with a client-server architecture.",
-      cs: "Chatovací aplikace v reálném čase vytvořená v Javě jako součást předmětu Softwarové inženýrství. Vyvinuta ve spolupráci se spolužákem, obsahuje zasílání zpráv více uživatelům s architekturou klient-server.",
+      en: "A control panel for Dungeons & Dragons game masters: characters with inventory and spells, NPCs, a bestiary, locations and quests. During a session it tracks combat state such as damage, healing the whole party, death saves, conditions and spell slots. JWT login, REST API with around 55 endpoints.",
+      cs: "Ovládací panel pro Dungeon Mastery v D&D: postavy s inventářem a kouzly, NPC, bestiář, lokace a questy. Během hry hlídá stav boje, tedy zranění, léčení celé družiny, death savy, stavy a sloty kouzel. Přihlášení přes JWT, REST API s přibližně 55 endpointy.",
     },
-    tags: ["Java", "Networking", "Socket Programming"],
-    icon: "lucide:message-circle",
-    github: "https://github.com/LukiMori/7SWI2_Projekt",
-    featured: true,
-  },
-  {
-    slug: "dnd-dm-panel",
-    title: {
-      en: "D&D Dungeon Master Control Panel",
-      cs: "D&D Ovládací panel Dungeon Mastera",
-    },
-    description: {
-      en: "A web-based Dungeons & Dragons Dungeon Master control panel built with JavaScript. Provides DMs with tools to manage and run tabletop RPG sessions effectively.",
-      cs: "Webový ovládací panel pro Dungeon Mastera v Dungeons & Dragons vytvořený v JavaScriptu. Poskytuje DM nástrojům pro správu a vedení stolních RPG sezení.",
-    },
-    tags: ["JavaScript", "HTML", "CSS", "Web App"],
-    icon: "lucide:dice-5",
+    stack: ["Spring Boot", "React", "Tailwind", "MySQL", "Docker"],
     github: "https://github.com/obassler/SWI-project",
-    featured: true,
+  },
+  {
+    slug: "ghost-stories",
+    title: { en: "Ghost Stories VR", cs: "Ghost Stories VR" },
+    kind: { en: "University project", cs: "Projekt na univerzitě" },
+    year: "2025–2026",
+    description: {
+      en: "A VR horror game set in an abandoned asylum. You track down a cursed priest and hold your flashlight on him until he is banished; do it three times to escape. Raycast-based flashlight detection, banishment progress UI, footstep audio and VR locomotion.",
+      cs: "VR horor v opuštěném blázinci. Hráč hledá prokletého kněze a drží na něm baterku, dokud ho nevyžene. Po třech vyhnáních uteče. Detekce baterky přes raycast, ukazatel postupu vyhánění, zvuk kroků a pohyb ve VR.",
+    },
+    stack: ["Unity 6", "C#", "OpenXR", "URP"],
+    github: "https://github.com/obassler/ghoststories",
+  },
+  {
+    slug: "todo",
+    title: { en: "ToDo List", cs: "ToDo List" },
+    kind: { en: "University project", cs: "Projekt na univerzitě" },
+    year: "2026",
+    description: {
+      en: "Full-stack task manager with user accounts. Stateless JWT authentication, per-user tasks with due dates, pagination, and an Angular frontend with a route guard and an HTTP interceptor.",
+      cs: "Full-stack správce úkolů s uživatelskými účty. Bezstavová autentizace přes JWT, úkoly s termíny pro každého uživatele zvlášť, stránkování a frontend v Angularu s route guardem a HTTP interceptorem.",
+    },
+    stack: ["Spring Boot", "Spring Security", "Angular 21", "MySQL"],
+    github: "https://github.com/obassler/VFAP-ToDoList",
   },
   {
     slug: "text-venture",
-    title: {
-      en: "Text Adventure",
-      cs: "Textová adventura",
-    },
+    title: { en: "TextVenture", cs: "TextVenture" },
+    kind: { en: "University project", cs: "Projekt na univerzitě" },
+    year: "2025",
     description: {
-      en: "A text-based adventure game built in Java with interactive story branching and player choices.",
-      cs: "Textová adventura vytvořená v Javě s interaktivním větvením příběhu a volbami hráče.",
+      en: "A browser text RPG: create a character, explore by choosing what to do next and fight enemies turn by turn. Each player's progress is saved in Firestore.",
+      cs: "Textové RPG v prohlížeči: vytvoříš postavu, prozkoumáváš svět volbou dalšího kroku a bojuješ s nepřáteli na tahy. Postup každého hráče se ukládá do Firestore.",
     },
-    tags: ["Java", "Game Dev", "CLI"],
-    icon: "lucide:terminal",
+    stack: ["Spring Boot", "React", "Firebase"],
     github: "https://github.com/obassler/textVenture",
-    featured: true,
   },
   {
-    slug: "notes-app",
-    title: {
-      en: "Notes App",
-      cs: "Aplikace poznámek",
-    },
+    slug: "slavic-myths",
+    title: { en: "Svět bájí slovanských", cs: "Svět bájí slovanských" },
+    kind: { en: "Commission", cs: "Zakázka" },
+    year: "",
     description: {
-      en: "A mobile notes application built with Kotlin for Android. Allows users to create, edit, and organize their notes.",
-      cs: "Mobilní aplikace poznámek vytvořená v Kotlinu pro Android. Umožňuje uživatelům vytvářet, upravovat a organizovat své poznámky.",
+      en: "A game built around Slavic mythology, made for an art-school student's project.",
+      cs: "Hra postavená na slovanské mytologii, vytvořená pro projekt studentky umělecké školy.",
     },
-    tags: ["Kotlin", "Android", "Mobile"],
-    icon: "lucide:notebook-pen",
+    stack: ["Unity", "C#"],
+  },
+  {
+    slug: "android",
+    title: { en: "Android apps", cs: "Aplikace pro Android" },
+    kind: { en: "University exercises", cs: "Cvičení na univerzitě" },
+    year: "2025",
+    description: {
+      en: "A notes app with reordering and local persistence, and a quadratic equation solver.",
+      cs: "Poznámky s přeřazováním a lokálním ukládáním a kalkulačka kvadratických rovnic.",
+    },
+    stack: ["Kotlin", "Jetpack Compose"],
     github: "https://github.com/obassler/NotesApp",
-    featured: false,
-  },
-  {
-    slug: "quadratic-calc",
-    title: {
-      en: "Quadratic Formula Calculator",
-      cs: "Kalkulačka kvadratických rovnic",
-    },
-    description: {
-      en: "A simple Android application built with Kotlin for calculating quadratic formulas.",
-      cs: "Jednoduchá Android aplikace vytvořená v Kotlinu pro výpočet kvadratických rovnic.",
-    },
-    tags: ["Kotlin", "Android", "Mobile"],
-    icon: "lucide:calculator",
-    github: "https://github.com/obassler/SimpleAppToCalcQuadraticFormula",
-    featured: false,
-  },
-  {
-    slug: "apple-app",
-    title: {
-      en: "Apple App",
-      cs: "Apple App",
-    },
-    description: {
-      en: "A mobile application project exploring app development concepts.",
-      cs: "Mobilní aplikace zkoumající koncepty vývoje aplikací.",
-    },
-    tags: ["Mobile", "App Dev"],
-    icon: "lucide:smartphone",
-    github: "https://github.com/obassler/AppleApp",
-    featured: false,
   },
 ];

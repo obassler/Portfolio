@@ -1,42 +1,30 @@
+type T = { en: string; cs: string };
+
 export interface EducationEntry {
-  title: { en: string; cs: string };
-  institution: { en: string; cs: string };
-  period: string;
-  description: { en: string; cs: string };
-  tags: string[];
+  school: T;
+  programme: T;
+  period: T;
+  note?: T;
 }
 
 export const education: EducationEntry[] = [
   {
-    title: {
-      en: "Bachelor's in Applied Informatics",
-      cs: "Bakalářské studium — Aplikovaná informatika",
-    },
-    institution: {
-      en: "University of Ostrava, Faculty of Science",
-      cs: "Ostravská univerzita, Přírodovědecká fakulta",
-    },
-    period: "2023 - 2026",
-    description: {
-      en: "Studying algorithms, data structures, software engineering, databases, computer networks, computer graphics, AI fundamentals, and more. Bachelor's thesis on Loss Landscapes in Neural Networks.",
-      cs: "Studium algoritmů, datových struktur, softwarového inženýrství, databází, počítačových sítí, počítačové grafiky, základů AI a dalšího. Bakalářská práce na téma Loss Landscapes v neuronových sítích.",
-    },
-    tags: ["Algorithms", "Software Engineering", "Databases", "Networks", "AI", "Computer Graphics"],
+    school: { en: "University of Ostrava, Faculty of Science", cs: "Ostravská univerzita, Přírodovědecká fakulta" },
+    programme: { en: "Bachelor's, Applied Informatics: Software Systems", cs: "Bakalářské studium, Aplikovaná informatika: Softwarové systémy" },
+    period: { en: "2023 – now", cs: "2023 – dosud" },
+    note: { en: "Finishing the thesis on loss landscapes in neural networks.", cs: "Dokončuji bakalářskou práci o ztrátových krajinách neuronových sítí." },
   },
   {
-    title: {
-      en: "High School — Information Technologies",
-      cs: "Střední škola — Informační technologie",
-    },
-    institution: {
-      en: "Střední škola informačních technologií, s.r.o.",
-      cs: "Střední škola informačních technologií, s.r.o.",
-    },
-    period: "2019 - 2023",
-    description: {
-      en: "Specialized in computer networks. Completed CCNA 1-3 and Cisco Network Security courses. Earned Maturita certification in Programming, Networks, and Operating Systems.",
-      cs: "Specializace na počítačové sítě. Dokončeny kurzy CCNA 1-3 a Cisco Network Security. Získána maturita z Programování, Sítí a Operačních systémů.",
-    },
-    tags: ["CCNA 1-3", "Cisco Security", "Programming", "Networks", "Operating Systems"],
+    school: { en: "Secondary School of Information Technologies, Frýdek-Místek", cs: "Střední škola informačních technologií, Frýdek-Místek" },
+    programme: { en: "Computer Networks, Maturita", cs: "Počítačové sítě, maturita" },
+    period: { en: "2019 – 2023", cs: "2019 – 2023" },
   },
+];
+
+export const certificates: string[] = [
+  "Cisco CCNA 1",
+  "Cisco CCNA 3",
+  "Cisco Network Security",
+  "Cisco Internet of Things",
+  "Cisco Linux",
 ];
