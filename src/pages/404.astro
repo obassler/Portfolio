@@ -3,14 +3,208 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 ---
 
 <BaseLayout title="Page not found | Ondřej Bassler">
-  <section class="ambient flex min-h-[80svh] items-center">
+  <canvas id="spider" class="pointer-events-none fixed inset-0 z-[5] h-full w-full" aria-hidden="true"></canvas>
+
+  <section class="ambient relative flex min-h-[80svh] items-center">
     <div class="mx-auto w-full max-w-6xl px-5 pt-24 sm:px-8">
-      <h1 class="text-[clamp(2.5rem,6vw,4.5rem)] font-semibold leading-none tracking-[-0.03em]">This page doesn't exist.</h1>
-      <p class="mt-5 max-w-[34rem] text-lg text-cream-2">The address may be mistyped, or the page has moved. Stránka neexistuje, adresa je nejspíš špatně.</p>
+      <p class="font-display text-[clamp(5rem,16vw,11rem)] font-semibold leading-none tracking-[-0.05em] text-crimson">404</p>
+      <h1 class="mt-4 text-[clamp(2rem,4.6vw,3.5rem)] font-semibold leading-none tracking-[-0.03em]">This page doesn't exist.</h1>
+      <p class="mt-5 max-w-[34rem] text-lg text-cream-2">
+        The address may be mistyped, or the page has moved. Only the spider lives here.
+        <span lang="cs">Stránka neexistuje, bydlí tu jen pavouk.</span>
+      </p>
       <div class="mt-9 flex flex-wrap gap-3">
         <a href="/" class="btn btn-primary">Go to the homepage</a>
-        <a href="/cs/" class="btn btn-glass glass">Na hlavní stránku</a>
+        <a href="/cs/" lang="cs" class="btn btn-glass glass">Na hlavní stránku</a>
       </div>
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  // A procedural spider that walks after the cursor.
+  // Each leg plants its foot and only steps when the body has moved far enough
+  // from it; diagonal legs step together, knees are solved with two-bone IK.
+  const canvas = document.getElementById("spider") as HTMLCanvasElement | null;
+  if (canvas) {
+    const ctx = canvas.getContext("2d")!;
+    const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let W = 0, H = 0, dpr = 1;
+    const resize = () => {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = window.innerWidth;
+      H = window.innerHeight;
+      canvas.width = W * dpr;
+      canvas.height = H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+    resize();
+    window.addEventListener("resize", resize);
+
+    const S = Math.max(0.75, Math.min(1.1, W / 1200)); // overall size
+    const UPPER = 46 * S, LOWER = 58 * S;
+    const body = { x: W * 0.72, y: H * 0.62, a: Math.PI, vx: 0, vy: 0 };
+    const target = { x: body.x, y: body.y };
+    let lastMove = performance.now();
+
+    // [angle of the hip on the body, angle of the resting foot, reach] per leg, mirrored per side
+    const layout = [
+      [0.45, 0.55, 1.0], [0.85, 1.05, 1.05], [1.3, 1.6, 1.0], [1.75, 2.3, 0.95],
+    ];
+    type Leg = { hip: number; rest: number; reach: number; side: 1 | -1; fx: number; fy: number; sx: number; sy: number; tx: number; ty: number; t: number; group: 0 | 1 };
+    const legs: Leg[] = [];
+    layout.forEach(([hip, rest, reach], i) => {
+      for (const side of [1, -1] as const) {
+        legs.push({ hip: hip * side, rest: rest * side, reach, side, fx: 0, fy: 0, sx: 0, sy: 0, tx: 0, ty: 0, t: 1, group: ((i + (side === 1 ? 0 : 1)) % 2) as 0 | 1 });
+      }
+    });
+
+    const restPoint = (l: Leg, lead = 0) => {
+      const r = (UPPER + LOWER) * 0.62 * l.reach;
+      const ang = body.a + l.rest;
+      return { x: body.x + Math.cos(ang) * r + body.vx * lead, y: body.y + Math.sin(ang) * r + body.vy * lead };
+    };
+    legs.forEach((l) => {
+      const p = restPoint(l);
+      l.fx = l.sx = l.tx = p.x;
+      l.fy = l.sy = l.ty = p.y;
+    });
+
+    window.addEventListener("pointermove", (e) => {
+      target.x = e.clientX;
+      target.y = e.clientY;
+      lastMove = performance.now();
+    }, { passive: true });
+
+    let stepGroup: 0 | 1 = 0;
+
+    const ik = (hx: number, hy: number, fx: number, fy: number, bend: number) => {
+      let dx = fx - hx, dy = fy - hy;
+      let d = Math.hypot(dx, dy);
+      const max = UPPER + LOWER - 0.5;
+      if (d > max) { fx = hx + (dx / d) * max; fy = hy + (dy / d) * max; dx = fx - hx; dy = fy - hy; d = max; }
+      const a = (UPPER * UPPER - LOWER * LOWER + d * d) / (2 * d);
+      const h = Math.sqrt(Math.max(0, UPPER * UPPER - a * a));
+      const mx = hx + (dx * a) / d, my = hy + (dy * a) / d;
+      // knee rises away from the body (top-down view: pushed outward)
+      return { kx: mx - (dy / d) * h * bend, ky: my + (dx / d) * h * bend, fx, fy };
+    };
+
+    const draw = () => {
+      ctx.clearRect(0, 0, W, H);
+      // shadow
+      ctx.fillStyle = "rgba(0,0,0,0.35)";
+      ctx.beginPath();
+      ctx.ellipse(body.x + 6, body.y + 10, 34 * S, 24 * S, body.a, 0, Math.PI * 2);
+      ctx.fill();
+
+      for (const l of legs) {
+        const cx = body.x + Math.cos(body.a) * 4 * S, cy = body.y + Math.sin(body.a) * 4 * S;
+        const hipA = body.a + l.hip;
+        const hx = cx + Math.cos(hipA) * 8 * S, hy = cy + Math.sin(hipA) * 7 * S;
+        const lift = Math.sin(Math.min(1, l.t) * Math.PI) * 14 * S;
+        const { kx, ky, fx, fy } = ik(hx, hy, l.fx, l.fy - lift, -l.side);
+        ctx.strokeStyle = "rgba(242,236,228,0.55)";
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+        ctx.lineWidth = 3.2 * S;
+        ctx.beginPath(); ctx.moveTo(hx, hy); ctx.lineTo(kx, ky); ctx.stroke();
+        ctx.lineWidth = 2 * S;
+        ctx.beginPath(); ctx.moveTo(kx, ky); ctx.lineTo(fx, fy); ctx.stroke();
+        ctx.fillStyle = "#d6a85c";
+        ctx.beginPath(); ctx.arc(kx, ky, 1.8 * S, 0, Math.PI * 2); ctx.fill();
+      }
+
+      ctx.save();
+      ctx.translate(body.x, body.y);
+      ctx.rotate(body.a);
+      // abdomen
+      const g = ctx.createRadialGradient(-22 * S, -6 * S, 2, -18 * S, 0, 26 * S);
+      g.addColorStop(0, "#5a1420");
+      g.addColorStop(0.55, "#1a0d0e");
+      g.addColorStop(1, "#0c0a0a");
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.ellipse(-20 * S, 0, 24 * S, 18 * S, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = "rgba(200,16,46,0.7)";
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+      // hourglass mark
+      ctx.fillStyle = "#c8102e";
+      ctx.beginPath();
+      ctx.moveTo(-26 * S, -5 * S); ctx.lineTo(-14 * S, -5 * S); ctx.lineTo(-20 * S, 0);
+      ctx.lineTo(-14 * S, 5 * S); ctx.lineTo(-26 * S, 5 * S); ctx.lineTo(-20 * S, 0); ctx.closePath();
+      ctx.fill();
+      // head
+      ctx.fillStyle = "#141010";
+      ctx.beginPath(); ctx.ellipse(6 * S, 0, 11 * S, 9 * S, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = "rgba(242,236,228,0.25)";
+      ctx.stroke();
+      // eyes
+      ctx.fillStyle = "#d6a85c";
+      for (const [ex, ey, r] of [[12, -3, 1.9], [12, 3, 1.9], [9, -5.5, 1.2], [9, 5.5, 1.2]]) {
+        ctx.beginPath(); ctx.arc(ex * S, ey * S, r * S, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.restore();
+    };
+
+    let prev = performance.now();
+    const tick = (now: number) => {
+      const dt = Math.min(0.05, (now - prev) / 1000);
+      prev = now;
+
+      // wander a little when the cursor is idle
+      if (now - lastMove > 4000) {
+        const t = now / 1000;
+        target.x = W * (0.6 + 0.25 * Math.sin(t * 0.23));
+        target.y = H * (0.55 + 0.25 * Math.sin(t * 0.31 + 1));
+      }
+
+      // body: chase the cursor but stop short of it
+      const dx = target.x - body.x, dy = target.y - body.y;
+      const dist = Math.hypot(dx, dy);
+      const speed = Math.min(420, Math.max(0, dist - 40) * 3.2);
+      const nx = dist ? dx / dist : 0, ny = dist ? dy / dist : 0;
+      body.vx += (nx * speed - body.vx) * Math.min(1, dt * 6);
+      body.vy += (ny * speed - body.vy) * Math.min(1, dt * 6);
+      body.x += body.vx * dt;
+      body.y += body.vy * dt;
+      if (Math.hypot(body.vx, body.vy) > 25) {
+        const want = Math.atan2(body.vy, body.vx);
+        let diff = want - body.a;
+        diff = Math.atan2(Math.sin(diff), Math.cos(diff));
+        body.a += diff * Math.min(1, dt * 5);
+      }
+
+      // legs: one diagonal group steps at a time
+      const moving = legs.filter((l) => l.t < 1);
+      if (!moving.length) {
+        const group = legs.filter((l) => l.group === stepGroup);
+        const need = group.some((l) => {
+          const p = restPoint(l);
+          return Math.hypot(p.x - l.fx, p.y - l.fy) > 26 * S;
+        });
+        if (need) {
+          group.forEach((l) => {
+            const p = restPoint(l, 0.18);
+            l.sx = l.fx; l.sy = l.fy; l.tx = p.x; l.ty = p.y; l.t = 0;
+          });
+        }
+        stepGroup = stepGroup === 0 ? 1 : 0;
+      }
+      for (const l of legs) {
+        if (l.t < 1) {
+          l.t = Math.min(1, l.t + dt * 7.5);
+          const e = l.t < 0.5 ? 2 * l.t * l.t : 1 - Math.pow(-2 * l.t + 2, 2) / 2;
+          l.fx = l.sx + (l.tx - l.sx) * e;
+          l.fy = l.sy + (l.ty - l.sy) * e;
+        }
+      }
+
+      draw();
+      requestAnimationFrame(tick);
+    };
+
+    if (calm) draw();
+    else requestAnimationFrame(tick);
+  }
+</script>
