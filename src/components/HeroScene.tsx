@@ -52,7 +52,10 @@ export default function HeroScene() {
     mq.addEventListener("change", on);
     const io = new IntersectionObserver(([e]) => setVisible(e.isIntersecting), { threshold: 0 });
     if (wrap.current) io.observe(wrap.current);
+    // fade in even if the renderer's first frame is delayed
+    const t = window.setTimeout(() => setReady(true), 1500);
     return () => {
+      window.clearTimeout(t);
       mq.removeEventListener("change", on);
       io.disconnect();
     };
