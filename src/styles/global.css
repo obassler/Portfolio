@@ -1,94 +1,118 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:where(.dark, .dark *));
-
-/* Palette: a survey map. Grey-green paper, ink, sepia contour lines,
-   water blue for links and the descent path, a red marker for the minimum. */
+/* Tokens
+   - canvas: warm black, text warm white
+   - crimson: primary actions and highlighted data only
+   - gold: light in the 3D scene, dates and small metadata
+   - glass: surfaces people interact with (header, project panels, data panel, contact) */
 @theme {
-  --color-paper: #eef0ea;
-  --color-paper-2: #e4e7df;
-  --color-ink: #1c2321;
-  --color-ink-2: #48514d;
-  --color-ink-3: #6b736e;
-  --color-rule: #cdd2c8;
-  --color-contour: #a8977a;
-  --color-water: #1f5faf;
-  --color-marker: #c2362b;
+  --color-night: #0c0a0a;
+  --color-night-2: #141111;
+  --color-cream: #f2ece4;
+  --color-cream-2: #b8afa6;
+  --color-cream-3: #857c75;
+  --color-line: rgb(242 236 228 / 0.1);
+  --color-crimson: #c8102e;
+  --color-crimson-hi: #e2394c;
+  --color-gold: #d6a85c;
 
-  --font-sans: "Schibsted Grotesk", ui-sans-serif, system-ui, sans-serif;
-}
-
-.dark {
-  --color-paper: #182120;
-  --color-paper-2: #1f2a28;
-  --color-ink: #e3e8e2;
-  --color-ink-2: #b8c0ba;
-  --color-ink-3: #8b958f;
-  --color-rule: #34413e;
-  --color-contour: #6f6a58;
-  --color-water: #86b4f2;
-  --color-marker: #f07c6c;
+  --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
 }
 
 html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 5rem;
+  background: var(--color-night);
+  color-scheme: dark;
   -webkit-text-size-adjust: 100%;
 }
 
 body {
   font-family: var(--font-sans);
-  background: var(--color-paper);
-  color: var(--color-ink);
+  background: var(--color-night);
+  color: var(--color-cream);
+  line-height: 1.6;
   font-feature-settings: "kern", "liga";
-  line-height: 1.55;
 }
 
-::selection {
-  background: color-mix(in oklab, var(--color-water) 25%, transparent);
+h1, h2, h3 {
+  font-family: var(--font-display);
+  text-wrap: balance;
 }
+p { text-wrap: pretty; }
 
-a {
-  text-underline-offset: 0.18em;
-  text-decoration-thickness: 1px;
-}
+::selection { background: rgb(200 16 46 / 0.45); color: var(--color-cream); }
 
 :focus-visible {
-  outline: 2px solid var(--color-water);
+  outline: 2px solid var(--color-gold);
   outline-offset: 3px;
-  border-radius: 2px;
+  border-radius: 6px;
 }
 
-.tnum {
-  font-variant-numeric: tabular-nums;
+.tnum { font-variant-numeric: tabular-nums; }
+
+/* Frosted glass. A faint top highlight sells the edge; blur does the rest. */
+.glass {
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 0.06), rgb(255 255 255 / 0.02));
+  border: 1px solid rgb(255 255 255 / 0.09);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.08),
+    0 20px 50px -20px rgb(0 0 0 / 0.6);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
 }
 
-/* The one moment of motion: gradient descent rolling to its minimum. */
-.descent-path {
-  stroke-dasharray: var(--len);
-  stroke-dashoffset: var(--len);
-  animation: descend 2.6s cubic-bezier(0.22, 0.7, 0.2, 1) 0.4s forwards;
+/* Ambient light pools behind the glass so it has something to blur. */
+.ambient {
+  background:
+    radial-gradient(40rem 28rem at 12% 20%, rgb(200 16 46 / 0.16), transparent 70%),
+    radial-gradient(36rem 26rem at 88% 70%, rgb(214 168 92 / 0.10), transparent 70%);
 }
-.descent-end {
+
+/* Pill buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  padding: 0.8rem 1.35rem;
+  font-weight: 500;
+  font-size: 0.9375rem;
+  text-decoration: none;
+  transition: background-color 0.2s, border-color 0.2s, transform 0.2s;
+}
+.btn:active { transform: scale(0.98); }
+.btn-primary { background: var(--color-crimson); color: #fff; }
+.btn-primary:hover { background: var(--color-crimson-hi); }
+.btn-glass { color: var(--color-cream); }
+.btn-glass:hover { border-color: rgb(255 255 255 / 0.22); }
+
+/* Hero entrance: one sequence on load */
+.rise {
   opacity: 0;
-  animation: settle 0.5s ease-out 2.8s forwards;
+  transform: translateY(14px);
+  animation: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+  animation-delay: calc(var(--i, 0) * 90ms + 150ms);
 }
-@keyframes descend {
-  to { stroke-dashoffset: 0; }
-}
-@keyframes settle {
-  to { opacity: 1; }
-}
+@keyframes rise { to { opacity: 1; transform: none; } }
+
+/* Scene fades in once WebGL is ready */
+.scene { opacity: 0; transition: opacity 1.4s ease 0.2s; }
+.scene.ready { opacity: 1; }
+
+/* Section reveal: subtle, once */
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.reveal.in { opacity: 1; transform: none; }
+
+/* Project panels tilt toward the cursor */
+.tilt { transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform 0.35s ease, border-color 0.3s; will-change: transform; }
+.tilt:hover { border-color: rgb(214 168 92 / 0.35); }
+
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
 
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  .descent-path { animation: none; stroke-dashoffset: 0; }
-  .descent-end { animation: none; opacity: 1; }
-}
-
-.map-label {
-  paint-order: stroke;
-  stroke: var(--color-paper);
-  stroke-width: 5px;
-  stroke-linejoin: round;
+  .rise, .reveal { opacity: 1; transform: none; animation: none; transition: none; }
+  .scene { transition: none; }
+  .tilt { transform: none !important; }
 }

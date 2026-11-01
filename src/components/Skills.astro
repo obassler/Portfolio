@@ -2,6 +2,7 @@
 import type { Lang } from "@/i18n/ui";
 import { useTranslations } from "@/i18n/utils";
 import { skillGroups } from "@/data/skills";
+import { education, certificates } from "@/data/education";
 import Section from "./Section.astro";
 
 interface Props {
@@ -13,12 +14,42 @@ const t = useTranslations(lang);
 ---
 
 <Section id="skills" title={t("skills.title")}>
-  <dl class="grid gap-x-10 gap-y-6 sm:grid-cols-2">
+  <dl class="grid gap-x-12 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
     {skillGroups.map((g) => (
-      <div>
-        <dt class="font-semibold">{g.label[lang]}</dt>
-        <dd class="mt-1 leading-relaxed text-ink-2">{g.items.join(", ")}</dd>
+      <div class="reveal">
+        <dt class="font-display text-lg font-semibold">{g.label[lang]}</dt>
+        <dd class="mt-2 leading-relaxed text-cream-2">{g.items.join(", ")}</dd>
       </div>
     ))}
   </dl>
+
+  <div class="mt-20 grid gap-12 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">
+    <div class="reveal">
+      <h3 class="text-2xl font-semibold tracking-tight">{t("education.title")}</h3>
+      <ol class="mt-6 space-y-6">
+        {education.map((e) => (
+          <li>
+            <p class="tnum text-[0.875rem] text-gold">{e.period[lang]}</p>
+            <p class="mt-1 font-semibold">{e.school[lang]}</p>
+            <p class="text-cream-2">{e.programme[lang]}</p>
+            {e.note && <p class="mt-1 text-[0.9375rem] text-cream-3">{e.note[lang]}</p>}
+          </li>
+        ))}
+      </ol>
+    </div>
+    <dl class="reveal space-y-6">
+      <div>
+        <dt class="font-semibold">{t("education.certs")}</dt>
+        <dd class="mt-1 leading-relaxed text-cream-2">{certificates.join(", ")}</dd>
+      </div>
+      <div>
+        <dt class="font-semibold">{t("languages.title")}</dt>
+        <dd class="mt-1 leading-relaxed text-cream-2">{t("languages.list")}</dd>
+      </div>
+      <div>
+        <dt class="font-semibold">{t("life.title")}</dt>
+        <dd class="mt-1 leading-relaxed text-cream-2">{t("life.text")}</dd>
+      </div>
+    </dl>
+  </div>
 </Section>

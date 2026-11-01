@@ -1,10 +1,10 @@
 ---
 import type { Lang } from "@/i18n/ui";
 import Hero from "./Hero.astro";
-import Experience from "./Experience.astro";
+import Thesis from "./Thesis.astro";
 import Projects from "./Projects.astro";
+import Experience from "./Experience.astro";
 import Skills from "./Skills.astro";
-import Education from "./Education.astro";
 import Contact from "./Contact.astro";
 
 interface Props {
@@ -14,8 +14,8 @@ const { lang } = Astro.props;
 ---
 
 <Hero lang={lang} />
-<Experience lang={lang} />
+<Thesis lang={lang} />
 <Projects lang={lang} />
+<Experience lang={lang} />
 <Skills lang={lang} />
-<Education lang={lang} />
 <Contact lang={lang} />

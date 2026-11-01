@@ -2,15 +2,18 @@
 interface Props {
   id: string;
   title: string;
+  kicker?: string;
+  class?: string;
 }
-const { id, title } = Astro.props;
+const { id, title, kicker, class: cls = "" } = Astro.props;
 ---
 
-<section id={id} aria-labelledby={`${id}-h`} class="border-t border-rule">
-  <div class="mx-auto grid max-w-6xl gap-6 px-4 py-14 sm:px-8 md:grid-cols-[12rem_minmax(0,1fr)] md:gap-10 md:py-20">
-    <h2 id={`${id}-h`} class="text-2xl font-bold tracking-tight md:sticky md:top-24 md:self-start">{title}</h2>
-    <div class="min-w-0">
-      <slot />
+<section id={id} aria-labelledby={`${id}-h`} class={`relative scroll-mt-24 ${cls}`}>
+  <div class="mx-auto max-w-6xl px-5 py-20 sm:px-8 md:py-28">
+    <div class="reveal mb-10 md:mb-14">
+      {kicker && <p class="mb-3 text-[0.9375rem] text-gold">{kicker}</p>}
+      <h2 id={`${id}-h`} class="max-w-[20ch] text-[clamp(2rem,4.4vw,3.5rem)] font-semibold leading-[1.02] tracking-[-0.03em]">{title}</h2>
     </div>
+    <slot />
   </div>
 </section>

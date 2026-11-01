@@ -1,7 +1,7 @@
 ---
 import type { Lang } from "@/i18n/ui";
 import { useTranslations } from "@/i18n/utils";
-import { contours, descent, globalMin, W, H } from "@/lib/landscape";
+import HeroScene from "./HeroScene";
 
 interface Props {
   lang: Lang;
@@ -9,80 +9,47 @@ interface Props {
 
 const { lang } = Astro.props;
 const t = useTranslations(lang);
-const lines = contours(14);
-const path = descent();
-const gmin = globalMin();
 const cv = lang === "cs" ? "/cv/ondrej-bassler-cv.pdf" : "/cv/ondrej-bassler-cv-en.pdf";
+
+const facts = [
+  { k: t("hero.now"), v: t("hero.now.v") },
+  { k: t("hero.looking"), v: t("hero.looking.v") },
+  { k: t("hero.where"), v: t("hero.where.v") },
+];
 ---
 
-<section class="mx-auto grid max-w-6xl gap-10 px-4 pb-16 pt-12 sm:px-8 md:pt-20 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:items-center lg:gap-14">
-  <div>
-    <h1 class="text-[clamp(2.75rem,8vw,5.25rem)] font-extrabold leading-[0.95] tracking-[-0.035em]">
-      Ondřej<br />Bassler
-    </h1>
-    <p class="mt-3 text-xl font-medium text-ink-2">Software Developer</p>
+<section class="relative isolate flex min-h-[100svh] flex-col overflow-hidden">
+  <!-- light pools + 3D scene -->
+  <div class="ambient pointer-events-none absolute inset-0 -z-20"></div>
+  <div class="absolute inset-0 -z-10 md:left-[38%] max-md:top-[48%] max-md:opacity-40">
+    <HeroScene client:only="react" />
+  </div>
+  <div class="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-40 bg-gradient-to-t from-night to-transparent"></div>
 
-    <p class="mt-8 max-w-[34rem] text-lg leading-relaxed text-ink-2">{t("hero.lead")}</p>
+  <div class="mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center px-5 pb-10 pt-32 sm:px-8">
+    <h1
+      class="rise max-w-[13ch] text-[clamp(2.75rem,7.2vw,6rem)] font-semibold leading-[0.98] tracking-[-0.035em]"
+      style="--i:0"
+    >{t("hero.title")}</h1>
 
-    <ul class="mt-8 flex flex-wrap gap-x-6 gap-y-3 text-[0.9375rem]">
-      <li>
-        <a href={cv} download class="inline-block rounded bg-ink px-4 py-2.5 font-medium text-paper no-underline hover:bg-water">
-          {t("hero.cv")}
-        </a>
-      </li>
-      <li class="self-center">
-        <a href="https://github.com/obassler" class="text-water underline">github.com/obassler</a>
-      </li>
-      <li class="self-center">
-        <a href="mailto:ondrej.bassler@gmail.com" class="text-water underline">ondrej.bassler@gmail.com</a>
-      </li>
-    </ul>
-    <p class="mt-6 text-sm text-ink-3">{t("hero.location")}</p>
+    <p class="rise mt-7 max-w-[38rem] text-[1.0625rem] leading-relaxed text-cream-2 sm:text-lg" style="--i:1">
+      {t("hero.lead")}
+    </p>
+
+    <div class="rise mt-9 flex flex-wrap gap-3" style="--i:2">
+      <a href="#thesis" class="btn btn-primary">{t("hero.cta.work")}</a>
+      <a href={cv} download class="btn btn-glass glass">{t("hero.cta.cv")}</a>
+    </div>
   </div>
 
-  <figure class="m-0">
-    <svg
-      viewBox={`0 0 ${W} ${H}`}
-      role="img"
-      aria-label={t("hero.figure.label")}
-      class="block h-auto w-full"
-    >
-      <g fill="none" stroke-linecap="round">
-        {lines.map((c) => (
-          <path
-            d={c.d}
-            stroke="var(--color-contour)"
-            stroke-width={c.level % 4 === 3 ? 1.4 : 0.8}
-            opacity={c.level % 4 === 3 ? 0.95 : 0.7}
-          />
-        ))}
-      </g>
-
-      <circle cx={path.start[0]} cy={path.start[1]} r="4" fill="var(--color-paper)" stroke="var(--color-water)" stroke-width="2" />
-      <text class="map-label fill-ink-2" x={path.start[0] + 10} y={path.start[1] + 4} font-size="16">{t("hero.figure.start")}</text>
-
-      <path
-        d={path.d}
-        class="descent-path"
-        style={`--len:${path.length}`}
-        fill="none"
-        stroke="var(--color-water)"
-        stroke-width="2.25"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-
-      <g class="fill-ink-3 text-ink-3">
-        <path d={`M${gmin[0] - 6} ${gmin[1]}h12M${gmin[0]} ${gmin[1] - 6}v12`} stroke="currentColor" stroke-width="1.5" />
-        <text class="map-label" x={gmin[0]} y={gmin[1] + 28} text-anchor="middle" font-size="16">{t("hero.figure.global")}</text>
-      </g>
-
-      <g class="descent-end">
-        <circle cx={path.end[0]} cy={path.end[1]} r="6" fill="var(--color-marker)" />
-        <circle cx={path.end[0]} cy={path.end[1]} r="11" fill="none" stroke="var(--color-marker)" stroke-width="1.25" />
-        <text class="map-label fill-ink" x={path.end[0] - 18} y={path.end[1] - 16} text-anchor="end" font-size="16" font-weight="600">{t("hero.figure.min")}</text>
-      </g>
-    </svg>
-    <figcaption class="mt-3 max-w-[36rem] text-sm leading-relaxed text-ink-3">{t("hero.figure")}</figcaption>
-  </figure>
+  <div class="rise mx-auto w-full max-w-6xl px-5 pb-8 sm:px-8" style="--i:3">
+    <dl class="glass grid gap-4 rounded-2xl px-5 py-4 sm:grid-cols-3 sm:gap-6 sm:px-6">
+      {facts.map((f) => (
+        <div>
+          <dt class="text-[0.8125rem] text-gold">{f.k}</dt>
+          <dd class="mt-0.5 text-[0.9375rem] text-cream">{f.v}</dd>
+        </div>
+      ))}
+    </dl>
+  </div>
 </section>

@@ -3,9 +3,14 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 ---
 
 <BaseLayout title="Page not found | Ondřej Bassler">
-  <section class="mx-auto max-w-6xl px-4 py-24 sm:px-8">
-    <h1 class="text-4xl font-extrabold tracking-tight">This page doesn't exist</h1>
-    <p class="mt-4 max-w-[34rem] text-lg text-ink-2">The address may be mistyped, or the page has moved. Stránka neexistuje, adresa je nejspíš špatně.</p>
-    <p class="mt-8"><a href="/" class="text-water underline">Go to the homepage</a> &nbsp; <a href="/cs/" class="text-water underline">Na hlavní stránku</a></p>
+  <section class="ambient flex min-h-[80svh] items-center">
+    <div class="mx-auto w-full max-w-6xl px-5 pt-24 sm:px-8">
+      <h1 class="text-[clamp(2.5rem,6vw,4.5rem)] font-semibold leading-none tracking-[-0.03em]">This page doesn't exist.</h1>
+      <p class="mt-5 max-w-[34rem] text-lg text-cream-2">The address may be mistyped, or the page has moved. Stránka neexistuje, adresa je nejspíš špatně.</p>
+      <div class="mt-9 flex flex-wrap gap-3">
+        <a href="/" class="btn btn-primary">Go to the homepage</a>
+        <a href="/cs/" class="btn btn-glass glass">Na hlavní stránku</a>
+      </div>
+    </div>
   </section>
 </BaseLayout>

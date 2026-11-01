@@ -10,51 +10,62 @@ interface Props {
 
 const { lang } = Astro.props;
 const t = useTranslations(lang);
-const [lead, ...rest] = projects;
+const list = projects.filter((p) => p.slug !== "loss-landscapes");
 ---
 
 <Section id="projects" title={t("projects.title")}>
-  <!-- The thesis gets the most room; everything else is a plain list. -->
-  <article class="pb-10">
-    <p class="text-sm text-ink-3">{lead.kind[lang]}, <span class="tnum">{lead.year}</span></p>
-    <h3 class="mt-1 text-[clamp(1.5rem,3vw,2rem)] font-bold leading-tight tracking-tight">{lead.title[lang]}</h3>
-    <p class="mt-4 max-w-[42rem] text-lg leading-relaxed text-ink-2">{lead.description[lang]}</p>
-    <p class="mt-4 text-[0.9375rem] text-ink-3">{lead.stack.join(", ")}</p>
-    {lead.github && (
-      <p class="mt-3 text-[0.9375rem]"><a href={lead.github} class="text-water underline">{t("projects.code")}</a></p>
-    )}
-  </article>
+  <ul class="grid gap-4 md:grid-cols-2 md:gap-5">
+    {list.map((p, i) => {
+      const Tag = p.github ? "a" : "div";
+      return (
+        <li class={`reveal ${i === 0 ? "md:col-span-2" : ""}`}>
+          <Tag
+            href={p.github}
+            class="tilt glass group flex h-full flex-col rounded-3xl p-6 text-cream no-underline sm:p-8"
+            data-tilt={p.github ? "" : undefined}
+          >
+            <p class="text-[0.875rem] text-gold">
+              {p.kind[lang]}{p.year && <span class="tnum text-cream-3"> &nbsp;{p.year}</span>}
+            </p>
+            <h3 class={`mt-2 font-semibold tracking-tight ${i === 0 ? "text-[clamp(1.75rem,3vw,2.25rem)]" : "text-2xl"}`}>{p.title[lang]}</h3>
+            <p class={`mt-3 leading-relaxed text-cream-2 ${i === 0 ? "max-w-[46rem] text-lg" : ""}`}>{p.description[lang]}</p>
 
-  <ul class="divide-y divide-rule border-t border-rule">
-    {rest.map((p) => (
-      <li class="grid gap-x-8 gap-y-2 py-7 sm:grid-cols-[minmax(0,1fr)_11rem]">
-        <div>
-          <h3 class="text-lg font-semibold leading-snug">
-            {p.github ? (
-              <a href={p.github} class="text-ink no-underline hover:text-water hover:underline">{p.title[lang]}</a>
-            ) : (
-              p.title[lang]
-            )}
-          </h3>
-          <p class="mt-2 max-w-[40rem] leading-relaxed text-ink-2">{p.description[lang]}</p>
-          <p class="mt-2 text-[0.9375rem] text-ink-3">{p.stack.join(", ")}</p>
-        </div>
-        <div class="text-[0.9375rem] text-ink-3 sm:text-right">
-          <p>{p.kind[lang]}</p>
-          {p.year && <p class="tnum">{p.year}</p>}
-          <p class="mt-1">
-            {p.github ? (
-              <a href={p.github} class="text-water underline">GitHub</a>
-            ) : (
-              <span>{p.slug === "schedule-box" ? t("projects.private") : t("projects.noRepo")}</span>
-            )}
-          </p>
-        </div>
-      </li>
-    ))}
+            <div class="mt-auto flex flex-wrap items-end justify-between gap-4 pt-7">
+              <ul class="flex flex-wrap gap-2" aria-label="Stack">
+                {p.stack.map((s) => (
+                  <li class="rounded-full border border-white/10 px-3 py-1 text-[0.8125rem] text-cream-2">{s}</li>
+                ))}
+              </ul>
+              <span class="text-[0.875rem] text-cream-3 group-hover:text-cream">
+                {p.github ? t("projects.github") : p.slug === "schedule-box" ? t("projects.nda") : t("projects.unpublished")}
+              </span>
+            </div>
+          </Tag>
+        </li>
+      );
+    })}
   </ul>
-
-  <p class="mt-8 text-[0.9375rem]">
-    <a href="https://github.com/obassler?tab=repositories" class="text-water underline">{t("projects.all")}</a>
+  <p class="reveal mt-8">
+    <a href="https://github.com/obassler?tab=repositories" class="btn btn-glass glass">{t("projects.all")}</a>
   </p>
 </Section>
+
+<script>
+  const fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (fine && !calm) {
+    document.querySelectorAll<HTMLElement>("[data-tilt]").forEach((el) => {
+      el.addEventListener("pointermove", (e) => {
+        const r = el.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width - 0.5;
+        const y = (e.clientY - r.top) / r.height - 0.5;
+        el.style.setProperty("--ry", `${x * 5}deg`);
+        el.style.setProperty("--rx", `${-y * 5}deg`);
+      });
+      el.addEventListener("pointerleave", () => {
+        el.style.setProperty("--ry", "0deg");
+        el.style.setProperty("--rx", "0deg");
+      });
+    });
+  }
+</script>

@@ -23,8 +23,7 @@ const site = Astro.site ?? new URL("https://obassler.vercel.app");
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
-    <meta name="theme-color" content="#eef0ea" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#182120" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#0c0a0a" />
 
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -39,30 +38,58 @@ const site = Astro.site ?? new URL("https://obassler.vercel.app");
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400..800;1,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&family=Geist:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
 
     <title>{title}</title>
-
-    <script is:inline>
-      (function () {
-        var saved = null;
-        try { saved = localStorage.getItem("theme"); } catch (e) {}
-        var dark = saved ? saved === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
-        document.documentElement.classList.toggle("dark", dark);
-      })();
-    </script>
   </head>
   <body class="min-h-screen antialiased">
     <a
       href="#main"
-      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:bg-paper focus:px-3 focus:py-2"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-crimson focus:px-4 focus:py-2 focus:text-white"
     >{t("nav.skip")}</a>
     <Header lang={lang} />
     <main id="main">
       <slot />
     </main>
     <Footer lang={lang} />
+
+    <script>
+      import Lenis from "lenis";
+
+      const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      if (!calm) {
+        const lenis = new Lenis({ duration: 1.1, smoothWheel: true });
+        const raf = (time: number) => {
+          lenis.raf(time);
+          requestAnimationFrame(raf);
+        };
+        requestAnimationFrame(raf);
+        document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((a) => {
+          a.addEventListener("click", (e) => {
+            const id = a.getAttribute("href")!;
+            const el = id.length > 1 ? document.querySelector<HTMLElement>(id) : null;
+            if (!el) return;
+            e.preventDefault();
+            lenis.scrollTo(el, { offset: -88 });
+            history.replaceState(null, "", id);
+          });
+        });
+      }
+
+      const io = new IntersectionObserver(
+        (entries) =>
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add("in");
+              io.unobserve(e.target);
+            }
+          }),
+        { threshold: 0.12, rootMargin: "0px 0px -6% 0px" },
+      );
+      document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+    </script>
   </body>
 </html>

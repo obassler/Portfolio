@@ -1,7 +1,6 @@
 ---
 import type { Lang } from "@/i18n/ui";
 import { useTranslations } from "@/i18n/utils";
-import Section from "./Section.astro";
 
 interface Props {
   lang: Lang;
@@ -11,22 +10,38 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 ---
 
-<Section id="contact" title={t("contact.title")}>
-  <p class="max-w-[36rem] text-lg leading-relaxed text-ink-2">{t("contact.text")}</p>
-  <p class="mt-6">
-    <a
-      href="mailto:ondrej.bassler@gmail.com"
-      class="break-all text-[clamp(1.5rem,4.5vw,2.75rem)] font-bold tracking-tight text-ink decoration-water decoration-2 hover:text-water"
-    >ondrej.bassler@gmail.com</a>
-  </p>
-  <dl class="mt-8 flex flex-wrap gap-x-10 gap-y-3 text-[0.9375rem]">
-    <div>
-      <dt class="text-ink-3">{t("contact.phone")}</dt>
-      <dd><a href="tel:+420737018693" class="tnum text-ink no-underline hover:underline">+420 737 018 693</a></dd>
+<section id="contact" aria-labelledby="contact-h" class="relative isolate scroll-mt-24 overflow-hidden">
+  <div class="pointer-events-none absolute inset-0 -z-10" style="background:radial-gradient(42rem 24rem at 50% 100%, rgb(200 16 46 / 0.22), transparent 70%)"></div>
+  <div class="mx-auto max-w-6xl px-5 pb-24 pt-10 sm:px-8 md:pb-32">
+    <div class="reveal glass rounded-[2rem] px-6 py-12 sm:px-12 sm:py-16">
+      <h2 id="contact-h" class="text-[clamp(2.25rem,5vw,4rem)] font-semibold leading-none tracking-[-0.03em]">{t("contact.title")}</h2>
+      <p class="mt-5 max-w-[34rem] text-lg leading-relaxed text-cream-2">{t("contact.text")}</p>
+
+      <p class="mt-10">
+        <a
+          href="mailto:ondrej.bassler@gmail.com"
+          class="break-all font-display text-[clamp(1.5rem,4.4vw,3rem)] font-semibold tracking-tight text-cream underline decoration-crimson decoration-2 underline-offset-[0.2em] transition-colors hover:text-gold"
+        >ondrej.bassler@gmail.com</a>
+      </p>
+
+      <div class="mt-10 flex flex-wrap items-center gap-3">
+        <a href="mailto:ondrej.bassler@gmail.com" class="btn btn-primary">{t("contact.cta")}</a>
+        <button type="button" id="copy-email" class="btn btn-glass glass cursor-pointer" data-done={t("contact.copied")}>{t("contact.copy")}</button>
+        <a href="tel:+420737018693" class="btn btn-glass glass tnum">+420 737 018 693</a>
+        <a href="https://github.com/obassler" class="btn btn-glass glass">GitHub</a>
+      </div>
     </div>
-    <div>
-      <dt class="text-ink-3">GitHub</dt>
-      <dd><a href="https://github.com/obassler" class="text-ink no-underline hover:underline">github.com/obassler</a></dd>
-    </div>
-  </dl>
-</Section>
+  </div>
+</section>
+
+<script>
+  const b = document.getElementById("copy-email");
+  b?.addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText("ondrej.bassler@gmail.com");
+      const label = b.textContent;
+      b.textContent = b.dataset.done ?? "Copied";
+      setTimeout(() => (b.textContent = label), 1800);
+    } catch {}
+  });
+</script>
