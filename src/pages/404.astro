@@ -46,20 +46,25 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
     const target = { x: body.x, y: body.y };
     let lastMove = performance.now();
 
-    // [angle of the hip on the body, angle of the resting foot, reach] per leg, mirrored per side
-    const layout = [
-      [0.45, 0.55, 1.0], [0.85, 1.05, 1.05], [1.3, 1.6, 1.0], [1.75, 2.3, 0.95],
+    // Legs, front to back: hip angle on the body, angle of the resting foot, reach.
+    // Angles are measured from the direction the spider faces; mirrored per side.
+    const layout: [number, number, number][] = [
+      [0.55, 0.62, 0.98],
+      [1.1, 1.22, 0.86],
+      [1.75, 1.95, 0.84],
+      [2.35, 2.6, 0.96],
     ];
-    type Leg = { hip: number; rest: number; reach: number; side: 1 | -1; fx: number; fy: number; sx: number; sy: number; tx: number; ty: number; t: number; group: 0 | 1 };
+    type Leg = { hip: number; rest: number; reach: number; fx: number; fy: number; sx: number; sy: number; tx: number; ty: number; t: number; group: 0 | 1 };
     const legs: Leg[] = [];
     layout.forEach(([hip, rest, reach], i) => {
       for (const side of [1, -1] as const) {
-        legs.push({ hip: hip * side, rest: rest * side, reach, side, fx: 0, fy: 0, sx: 0, sy: 0, tx: 0, ty: 0, t: 1, group: ((i + (side === 1 ? 0 : 1)) % 2) as 0 | 1 });
+        // alternating tetrapod gait: L1 R2 L3 R4 step together, then the others
+        legs.push({ hip: hip * side, rest: rest * side, reach, fx: 0, fy: 0, sx: 0, sy: 0, tx: 0, ty: 0, t: 1, group: ((i + (side === 1 ? 0 : 1)) % 2) as 0 | 1 });
       }
     });
 
     const restPoint = (l: Leg, lead = 0) => {
-      const r = (UPPER + LOWER) * 0.62 * l.reach;
+      const r = (UPPER + LOWER) * 0.7 * l.reach;
       const ang = body.a + l.rest;
       return { x: body.x + Math.cos(ang) * r + body.vx * lead, y: body.y + Math.sin(ang) * r + body.vy * lead };
     };
@@ -77,16 +82,22 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 
     let stepGroup: 0 | 1 = 0;
 
-    const ik = (hx: number, hy: number, fx: number, fy: number, bend: number) => {
+    // Two-bone IK. Of the two possible knees, keep the one farther from the body,
+    // so every knee arches outward like a real spider's.
+    const ik = (hx: number, hy: number, fx: number, fy: number) => {
       let dx = fx - hx, dy = fy - hy;
-      let d = Math.hypot(dx, dy);
+      let d = Math.hypot(dx, dy) || 0.001;
       const max = UPPER + LOWER - 0.5;
       if (d > max) { fx = hx + (dx / d) * max; fy = hy + (dy / d) * max; dx = fx - hx; dy = fy - hy; d = max; }
       const a = (UPPER * UPPER - LOWER * LOWER + d * d) / (2 * d);
       const h = Math.sqrt(Math.max(0, UPPER * UPPER - a * a));
       const mx = hx + (dx * a) / d, my = hy + (dy * a) / d;
-      // knee rises away from the body (top-down view: pushed outward)
-      return { kx: mx - (dy / d) * h * bend, ky: my + (dx / d) * h * bend, fx, fy };
+      const k1 = { x: mx - (dy / d) * h, y: my + (dx / d) * h };
+      const k2 = { x: mx + (dy / d) * h, y: my - (dx / d) * h };
+      const d1 = Math.hypot(k1.x - body.x, k1.y - body.y);
+      const d2 = Math.hypot(k2.x - body.x, k2.y - body.y);
+      const k = d1 > d2 ? k1 : k2;
+      return { kx: k.x, ky: k.y, fx, fy };
     };
 
     const draw = () => {
@@ -98,20 +109,20 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
       ctx.fill();
 
       for (const l of legs) {
-        const cx = body.x + Math.cos(body.a) * 4 * S, cy = body.y + Math.sin(body.a) * 4 * S;
         const hipA = body.a + l.hip;
-        const hx = cx + Math.cos(hipA) * 8 * S, hy = cy + Math.sin(hipA) * 7 * S;
-        const lift = Math.sin(Math.min(1, l.t) * Math.PI) * 14 * S;
-        const { kx, ky, fx, fy } = ik(hx, hy, l.fx, l.fy - lift, -l.side);
-        ctx.strokeStyle = "rgba(242,236,228,0.55)";
+        const hx = body.x + Math.cos(hipA) * 9 * S, hy = body.y + Math.sin(hipA) * 8 * S;
+        const lift = Math.sin(Math.min(1, l.t) * Math.PI) * 10 * S;
+        const { kx, ky, fx, fy } = ik(hx, hy, l.fx, l.fy - lift);
         ctx.lineCap = "round";
         ctx.lineJoin = "round";
-        ctx.lineWidth = 3.2 * S;
+        ctx.strokeStyle = "rgba(242,236,228,0.62)";
+        ctx.lineWidth = 3 * S;
         ctx.beginPath(); ctx.moveTo(hx, hy); ctx.lineTo(kx, ky); ctx.stroke();
-        ctx.lineWidth = 2 * S;
+        ctx.strokeStyle = "rgba(242,236,228,0.48)";
+        ctx.lineWidth = 1.7 * S;
         ctx.beginPath(); ctx.moveTo(kx, ky); ctx.lineTo(fx, fy); ctx.stroke();
         ctx.fillStyle = "#d6a85c";
-        ctx.beginPath(); ctx.arc(kx, ky, 1.8 * S, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(kx, ky, 2 * S, 0, Math.PI * 2); ctx.fill();
       }
 
       ctx.save();
@@ -171,24 +182,31 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
         const want = Math.atan2(body.vy, body.vx);
         let diff = want - body.a;
         diff = Math.atan2(Math.sin(diff), Math.cos(diff));
-        body.a += diff * Math.min(1, dt * 5);
+        body.a += diff * Math.min(1, dt * 3);
       }
 
-      // legs: one diagonal group steps at a time
-      const moving = legs.filter((l) => l.t < 1);
-      if (!moving.length) {
-        const group = legs.filter((l) => l.group === stepGroup);
-        const need = group.some((l) => {
+      // legs: one diagonal group steps at a time; a badly stretched leg may step anyway
+      const STEP = 30 * S;
+      const busy = legs.some((l) => l.t < 1);
+      if (!busy) {
+        for (const l of legs) {
+          if (l.group !== stepGroup) continue;
           const p = restPoint(l);
-          return Math.hypot(p.x - l.fx, p.y - l.fy) > 26 * S;
-        });
-        if (need) {
-          group.forEach((l) => {
-            const p = restPoint(l, 0.18);
-            l.sx = l.fx; l.sy = l.fy; l.tx = p.x; l.ty = p.y; l.t = 0;
-          });
+          if (Math.hypot(p.x - l.fx, p.y - l.fy) > STEP) {
+            const q = restPoint(l, 0.22);
+            l.sx = l.fx; l.sy = l.fy; l.tx = q.x; l.ty = q.y; l.t = 0;
+          }
         }
         stepGroup = stepGroup === 0 ? 1 : 0;
+      }
+      for (const l of legs) {
+        if (l.t >= 1) {
+          const p = restPoint(l);
+          if (Math.hypot(p.x - l.fx, p.y - l.fy) > STEP * 2.6) {
+            const q = restPoint(l, 0.22);
+            l.sx = l.fx; l.sy = l.fy; l.tx = q.x; l.ty = q.y; l.t = 0;
+          }
+        }
       }
       for (const l of legs) {
         if (l.t < 1) {
