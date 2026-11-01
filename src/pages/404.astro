@@ -23,7 +23,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 <script>
   // A procedural spider that walks after the cursor.
   // Each leg plants its foot and only steps when the body has moved far enough
-  // from it; diagonal legs step together, knees are solved with two-bone IK.
+  // from it; alternate legs step together (tetrapod gait).
   const canvas = document.getElementById("spider") as HTMLCanvasElement | null;
   if (canvas) {
     const ctx = canvas.getContext("2d")!;
@@ -41,18 +41,19 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
     window.addEventListener("resize", resize);
 
     const S = Math.max(0.75, Math.min(1.1, W / 1200)); // overall size
-    const UPPER = 46 * S, LOWER = 58 * S;
+    const UPPER = 46 * S, LOWER = 58 * S; // leg segment lengths, used for reach
     const body = { x: W * 0.72, y: H * 0.62, a: Math.PI, vx: 0, vy: 0 };
     const target = { x: body.x, y: body.y };
     let lastMove = performance.now();
 
     // Legs, front to back: hip angle on the body, angle of the resting foot, reach.
     // Angles are measured from the direction the spider faces; mirrored per side.
+    // one pair reaching forward, two out to the sides, one well back
     const layout: [number, number, number][] = [
-      [0.55, 0.62, 0.98],
-      [1.1, 1.22, 0.86],
-      [1.75, 1.95, 0.84],
-      [2.35, 2.6, 0.96],
+      [0.7, 0.78, 1.0],
+      [1.35, 1.42, 0.86],
+      [1.9, 1.98, 0.86],
+      [2.5, 2.72, 1.04],
     ];
     type Leg = { hip: number; rest: number; reach: number; fx: number; fy: number; sx: number; sy: number; tx: number; ty: number; t: number; group: 0 | 1 };
     const legs: Leg[] = [];
@@ -66,7 +67,8 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
     const restPoint = (l: Leg, lead = 0) => {
       const r = (UPPER + LOWER) * 0.7 * l.reach;
       const ang = body.a + l.rest;
-      return { x: body.x + Math.cos(ang) * r + body.vx * lead, y: body.y + Math.sin(ang) * r + body.vy * lead };
+      const ox = body.x - Math.cos(body.a) * 8 * S, oy = body.y - Math.sin(body.a) * 8 * S;
+      return { x: ox + Math.cos(ang) * r + body.vx * lead, y: oy + Math.sin(ang) * r + body.vy * lead };
     };
     legs.forEach((l) => {
       const p = restPoint(l);
@@ -82,24 +84,13 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 
     let stepGroup: 0 | 1 = 0;
 
-    // Two-bone IK. Of the two possible knees, keep the one farther from the body,
-    // so every knee arches outward like a real spider's.
-    const ik = (hx: number, hy: number, fx: number, fy: number) => {
-      let dx = fx - hx, dy = fy - hy;
-      let d = Math.hypot(dx, dy) || 0.001;
-      const max = UPPER + LOWER - 0.5;
-      if (d > max) { fx = hx + (dx / d) * max; fy = hy + (dy / d) * max; dx = fx - hx; dy = fy - hy; d = max; }
-      const a = (UPPER * UPPER - LOWER * LOWER + d * d) / (2 * d);
-      const h = Math.sqrt(Math.max(0, UPPER * UPPER - a * a));
-      const mx = hx + (dx * a) / d, my = hy + (dy * a) / d;
-      const k1 = { x: mx - (dy / d) * h, y: my + (dx / d) * h };
-      const k2 = { x: mx + (dy / d) * h, y: my - (dx / d) * h };
-      const d1 = Math.hypot(k1.x - body.x, k1.y - body.y);
-      const d2 = Math.hypot(k2.x - body.x, k2.y - body.y);
-      const k = d1 > d2 ? k1 : k2;
-      return { kx: k.x, ky: k.y, fx, fy };
+    const hipOf = (l: Leg) => {
+      // hips sit along the sides of the head section, front pair furthest forward
+      const along = (6 - (Math.abs(l.hip) / 2.5) * 12) * S;
+      const side = Math.sign(l.hip);
+      const c = Math.cos(body.a), s2 = Math.sin(body.a);
+      return { hx: body.x + c * along - s2 * 8 * S * side, hy: body.y + s2 * along + c * 8 * S * side };
     };
-
     const draw = () => {
       ctx.clearRect(0, 0, W, H);
       // shadow
@@ -109,10 +100,19 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
       ctx.fill();
 
       for (const l of legs) {
-        const hipA = body.a + l.hip;
-        const hx = body.x + Math.cos(hipA) * 9 * S, hy = body.y + Math.sin(hipA) * 8 * S;
-        const lift = Math.sin(Math.min(1, l.t) * Math.PI) * 10 * S;
-        const { kx, ky, fx, fy } = ik(hx, hy, l.fx, l.fy - lift);
+        const { hx, hy } = hipOf(l);
+        // a raised foot pulls in toward the hip a little (seen from above)
+        const lift = 1 - Math.sin(Math.min(1, l.t) * Math.PI) * 0.14;
+        const fx = hx + (l.fx - hx) * lift, fy = hy + (l.fy - hy) * lift;
+        // Seen from above a spider's leg is nearly straight; the knee is the high point,
+        // so it shows as a slight kink pushed away from the body.
+        const mx = hx + (fx - hx) * 0.42, my = hy + (fy - hy) * 0.42;
+        let ox = mx - body.x, oy = my - body.y;
+        const ol = Math.hypot(ox, oy) || 1;
+        ox /= ol; oy /= ol;
+        const reach = Math.hypot(fx - hx, fy - hy);
+        const bulge = Math.max(4, 22 - reach * 0.12) * S;
+        const kx = mx + ox * bulge, ky = my + oy * bulge;
         ctx.lineCap = "round";
         ctx.lineJoin = "round";
         ctx.strokeStyle = "rgba(242,236,228,0.62)";
