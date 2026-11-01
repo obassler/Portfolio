@@ -1,6 +1,6 @@
 # Portfolio
 
-Personal site of Ondřej Bassler, live at [obassler.vercel.app](https://obassler.vercel.app). English at `/`, Czech at `/cs/`.
+Personal site of Ondřej Bassler, live at [onnielportfolio.vercel.app](https://onnielportfolio.vercel.app). English at `/`, Czech at `/cs/`.
 
 ![Astro](https://img.shields.io/badge/Astro-5-BC52EE?logo=astro&logoColor=white)
 ![Tailwind](https://img.shields.io/badge/Tailwind-4-06B6D4?logo=tailwindcss&logoColor=white)

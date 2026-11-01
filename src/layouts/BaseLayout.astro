@@ -13,7 +13,7 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const altLang = getAlternateLanguage(lang);
 const { title = t("meta.title"), description = t("meta.description") } = Astro.props;
-const site = Astro.site ?? new URL("https://obassler.vercel.app");
+const site = Astro.site ?? new URL("https://onnielportfolio.vercel.app");
 ---
 
 <!doctype html>

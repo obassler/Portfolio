@@ -5,7 +5,7 @@ import sitemap from "@astrojs/sitemap";
 import react from "@astrojs/react";
 
 export default defineConfig({
-  site: "https://obassler.vercel.app",
+  site: "https://onnielportfolio.vercel.app",
   i18n: {
     defaultLocale: "en",
     locales: ["en", "cs"],
